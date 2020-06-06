@@ -29,3 +29,33 @@ draw_hline:
 	pop ebx
 	pop eax
 	ret
+
+; Draw a rectangle of size ecx * edx, with the top-left corner of coordinates
+; eax, ebx and with the color on the top of the stack
+draw_rectangle:
+	push edx
+	push ecx
+	push edi
+	push esi
+	push ebx
+	push edx
+	mov ebx, ecx
+	mov edx, [esp + 28]
+	add [esp], ebx
+	loop:
+		mov ecx, [esp]
+		mov edi, [esp + 4]
+		cmp edi, ecx
+		je end
+		call draw_hline
+		dec ecx
+		mov [esp], ecx
+		jmp loop
+	end:
+		pop edx
+		pop ebx
+		pop esi
+		pop edi
+		pop ecx
+		pop edx
+		ret
