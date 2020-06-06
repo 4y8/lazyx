@@ -2,6 +2,10 @@
 [bits 16]
 	mov bp, 0x9000
 	mov sp, bp
+	mov ax, 0x13 ; Set the Video mode to 13h, VGA 320x200 256 colours
+	mov ah, 0
+	int 0x10
+
 kernel_disk_load:
 	mov [BOOT_DRIVE], dl ; Save the boot drive 
 	mov dl, [BOOT_DRIVE]
