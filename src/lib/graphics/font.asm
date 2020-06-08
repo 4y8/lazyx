@@ -1,3 +1,4 @@
+; Depends on shapse.asm
 font_start:
 	times 1056 db 0
 
@@ -313,7 +314,7 @@ font_x:
 	db 000000b
 	db 000000b
 
-font_g:
+font_y:
 	db 000000b
 	db 000000b
 	db 000000b 
@@ -326,7 +327,7 @@ font_g:
 	db 000010b ;    x
 	db 001100b ;  xx
 
-font_v: 
+font_z: 
 	db 000000b
 	db 000000b
 	db 000000b 
@@ -341,12 +342,56 @@ font_v:
 
 ; Draws the character eax at position ebx, ecx of the colour edx
 draw_character:
-	sub esp, 12 ; Make place for three local variables
-	xor [esp + 4], [esp + 4]
-	xor [esp], [esp]
+	push eax
+	push ebx
+	push ecx
+	push edi
+	push esi
+	push 0
+	push 0
+	push 0
+	push eax
+	mov eax, ebx
+	mov ebx, ecx
+	mov ecx, edx ; Set the color of pixels
+	imul eax, 11
+	mov [esp + 8], eax
+	pop eax
+	add DWORD [esp + 8], font_start 
 	draw_character_loop:
-		cmp [esp], 10
+		mov edi, [esp]	
+		cmp edi, 11
 		je draw_character_end
+		inc DWORD [esp]
+		mov edi, [esp + 8]
+		mov edi, [edi]
+		draw_charcter_pixel_loop:
+			shl edi, 1	
+			mov esi, edi
+			and esi, 1
+			cmp esi, 0
+			je draw_charcter_aft_draw
+			call draw_pixel
+			draw_charcter_aft_draw:
+			inc eax
+			inc DWORD [esp + 4] 
+			mov esi, [esp + 4]
+			cmp esi, 6
+			jne draw_charcter_pixel_loop
+		sub eax, 6
+		mov BYTE [esp + 4], 0
+		inc DWORD [esp + 8]
+		inc ebx
+		jmp draw_character_loop
+
+		
 	draw_character_end:
-		add esp, 8 ; Deallocate the local variables
+		pop esi
+		pop esi
+		pop esi
+		pop esi
+		pop edi
+		pop ecx
+		pop ebx
+		pop eax
 		ret
