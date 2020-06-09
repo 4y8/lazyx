@@ -347,44 +347,44 @@ draw_character:
 	push ecx
 	push edi
 	push esi
-	push 0
-	push 0
-	push 0
 	push eax
+	imul eax, 11
+	pop eax
 	mov eax, ebx
 	mov ebx, ecx
 	mov ecx, edx ; Set the color of pixels
-	imul eax, 11
-	mov [esp + 8], eax
-	pop eax
-	add DWORD [esp + 8], font_start 
+	; add DWORD [esp + 8], font_start 
+	push font_z 
+	push 6 
+	push 0
+	add eax, 6 
 	draw_character_loop:
-		mov edi, [esp]	
-		cmp edi, 11
+		mov edi, [esp]
+		cmp edi, 12
 		je draw_character_end
 		inc DWORD [esp]
 		mov edi, [esp + 8]
-		mov edi, [edi]
+		mov edi, 101000b
 		draw_charcter_pixel_loop:
-			shl edi, 1	
+			mov esi, [esp + 4]
+			cmp esi, 0 
+			je draw_charcter_aft_loop
+			shr edi, 1	
 			mov esi, edi
 			and esi, 1
-			cmp esi, 0
+			cmp esi, 0 
 			je draw_charcter_aft_draw
 			call draw_pixel
 			draw_charcter_aft_draw:
-			inc eax
-			inc DWORD [esp + 4] 
-			mov esi, [esp + 4]
-			cmp esi, 6
-			jne draw_charcter_pixel_loop
-		sub eax, 6
-		mov BYTE [esp + 4], 0
-		inc DWORD [esp + 8]
-		inc ebx
-		jmp draw_character_loop
-
-		
+				dec eax
+				dec DWORD [esp + 4] 
+				jmp draw_charcter_pixel_loop
+		draw_charcter_aft_loop:
+			add eax, 6 
+			mov DWORD [esp + 4], 6 
+			inc DWORD [esp + 8]
+			inc ebx
+			jmp draw_character_loop
 	draw_character_end:
 		pop esi
 		pop esi
