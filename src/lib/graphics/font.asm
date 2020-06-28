@@ -1,4 +1,3 @@
-; Depends on shapse.asm
 font_start:
 	times 1056 db 0
 
@@ -327,12 +326,11 @@ font_y:
 	db 000010b ;    x
 	db 001100b ;  xx
 
-font_z: 
+font_z: dd 011110b ; xxxx  
 	db 000000b
 	db 000000b
 	db 000000b 
 	db 000000b
-	db 011110b ; xxxx  
 	db 000100b ;   x  
 	db 001000b ;  x  
 	db 010000b ; x  
@@ -340,6 +338,9 @@ font_z:
 	db 000000b
 	db 000000b
 
+
+
+; Depends on shapse.asm
 ; Draws the character eax at position ebx, ecx of the colour edx
 draw_character:
 	push eax
@@ -347,47 +348,42 @@ draw_character:
 	push ecx
 	push edi
 	push esi
-	push eax
-	imul eax, 11
-	pop eax
+	; push eax
+	; imul eax, 11
+	; pop eax
 	mov eax, ebx
 	mov ebx, ecx
 	mov ecx, edx ; Set the color of pixels
 	; add DWORD [esp + 8], font_start 
 	push font_z 
-	push 6 
-	push 0
-	add eax, 6 
+	mov dh, 0
+	add eax, 1
 	draw_character_loop:
-		mov edi, [esp]
-		cmp edi, 12
+		cmp dh, 11
 		je draw_character_end
-		inc DWORD [esp]
-		mov edi, [esp + 8]
-		mov edi, 101000b
+		inc dh
+		mov edi, [esp]
+		mov edi, [font_z]; 011110b
+		mov dl,  6
 		draw_charcter_pixel_loop:
-			mov esi, [esp + 4]
-			cmp esi, 0 
+			cmp dl, 0 
 			je draw_charcter_aft_loop
-			shr edi, 1	
+			dec dl
+			shr edi, 1
 			mov esi, edi
 			and esi, 1
-			cmp esi, 0 
+			cmp esi, 0
 			je draw_charcter_aft_draw
 			call draw_pixel
 			draw_charcter_aft_draw:
-				dec eax
-				dec DWORD [esp + 4] 
+				inc eax
 				jmp draw_charcter_pixel_loop
 		draw_charcter_aft_loop:
-			add eax, 6 
-			mov DWORD [esp + 4], 6 
-			inc DWORD [esp + 8]
+			; inc DWORD [esp]
 			inc ebx
+			sub eax, 6 
 			jmp draw_character_loop
 	draw_character_end:
-		pop esi
-		pop esi
 		pop esi
 		pop esi
 		pop edi

@@ -1,13 +1,11 @@
 ; Draw a pixel of colour stored in ecx, at x eax and y ebx.
 draw_pixel:
-	push eax ; Save registers
 	push ebx
 	imul ebx, 320 
-	add eax, ebx
-	add eax, VIDEO_MEMORY
-	mov [eax], ecx ; Move the color to x + 320 * y
+	add ebx, eax
+	add ebx, VIDEO_MEMORY
+	mov [ebx], ecx ; Move the color to x + 320 * y
 	pop ebx ; Restore registers
-	pop eax
 	ret
 
 ; Draw a horizontal line starting at the point eax, ecx, of size ebx and of 

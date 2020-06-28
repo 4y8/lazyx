@@ -2,7 +2,8 @@
 [bits 16]
 	mov bp, 0x9000
 	mov sp, bp
-	mov ax, 0x13 ; Set the Video mode to 13h, VGA 320x200 256 colours
+	; mov ax, 0x13 Set the Video mode to 13h, VGA 320x200 256 colours
+	mov ax, 0x3 ; Set the Video mode to 3h, Text 80x25 16 colours
 	mov ah, 0
 	int 0x10
 
@@ -11,7 +12,7 @@ kernel_disk_load:
 	mov dl, [BOOT_DRIVE]
 	mov bx, [main]
 	mov ah, 0x02
-	mov al, 15 
+	mov al, 0x80 
 	mov ch, 0x00
 	mov dh, 0x00
 	mov cl, 0x02
