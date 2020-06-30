@@ -1,11 +1,12 @@
 main:
-	mov eax, 109 
-	mov ebx, 0 
+	mov eax, HELLO
+	mov ebx, 8 
 	mov ecx, 0
-	mov edx, 0x0F 
-	call draw_character
+	mov edx, 0x0F
+	call draw_string
 	jmp $
 
 VIDEO_MEMORY equ 0xA0000
-%include "lib/graphics/shapes.asm"
+%include "lib/text/text.asm"
 %include "lib/graphics/font.asm"
+%include "lib/graphics/shapes.asm"
