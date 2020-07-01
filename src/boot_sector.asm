@@ -75,11 +75,6 @@ init_pm:
 	call BEGIN_PM
 
 BEGIN_PM:
- 	mov eax, HELLO
-        mov ebx, 8
-	mov ecx, 0
-	mov edx, 0x0F
-	call draw_string
 	call [main]
 	jmp $
 
@@ -91,5 +86,3 @@ dw 0xaa55
 
 CODE_SEG     equ gdt_code - gdt_start
 DATA_SEG     equ gdt_data - gdt_start
-HELLO db "Hello World!", 0
-

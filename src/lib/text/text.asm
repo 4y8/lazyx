@@ -2,11 +2,9 @@
 ; Draws the null-terminated string at memory address eax, on position ebx, ecx
 ; and of colour edx
 draw_string:
-	push eax
-	push ecx
-	push edx
-	push edi
+	pusha
 	mov edi, 0xB8000
+	sub eax, main
 	imul ecx, 80
 	add ecx, ebx
 	shl ecx, 1
@@ -21,8 +19,5 @@ draw_string:
 	add edi, 2
 	jmp .start
 	.end:
-	pop edi
-	pop edx
-	pop ecx
-	pop eax
+	popa
 	ret

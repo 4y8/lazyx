@@ -363,7 +363,7 @@ draw_character:
 		je draw_character_end
 		inc dh
 		mov edi, [esp]
-		mov edi, [font_z]; 011110b
+		mov edi, [font_z - main]; 011110b
 		mov dl,  6
 		draw_charcter_pixel_loop:
 			cmp dl, 0 
