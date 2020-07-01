@@ -10,7 +10,7 @@
 kernel_disk_load:
 	mov [BOOT_DRIVE], dl ; Save the boot drive 
 	mov dl, [BOOT_DRIVE]
-	mov bx, [main]
+	mov bx, 0x1000 ; [main]
 	mov ah, 0x02
 	mov al, 0x80 
 	mov ch, 0x00
@@ -75,7 +75,7 @@ init_pm:
 	call BEGIN_PM
 
 BEGIN_PM:
-	call [main]
+	call 0x1000; [main]
 	jmp $
 
 BOOT_DRIVE db 0
