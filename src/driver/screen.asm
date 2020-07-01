@@ -78,6 +78,7 @@ print_char:
 ; Print the integer eax of colour ebx
 kprint_int:
 	pusha
+	mov edi, .kprint_buffer + 126 - OFF
 	.start:
 	mov edx, 0
 	mov ecx, 10
@@ -87,14 +88,17 @@ kprint_int:
 	cmp ecx, 0
 	je .end
 	add edx, '0' 
-	push eax
-	mov eax, edx 
-	call print_char
-	pop eax
+	mov [edi], dl 
+	dec edi
 	jmp .start
 	.end:
+	inc edi
+	add edi, OFF
+	mov eax, edi
+	call print_string
 	popa
 	ret
+	.kprint_buffer: times 128 db 0 
 
 kprintf:
 	

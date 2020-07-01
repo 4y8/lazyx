@@ -10,7 +10,7 @@ main:
 	mov eax, 'a'
 	call print_char
 	call print_char
-	mov eax, 2002
+	mov eax, 2020
 	call kprint_int
 	jmp $
 
