@@ -10,6 +10,8 @@ main:
 	mov eax, 'a'
 	call print_char
 	call print_char
+	mov eax, 2002
+	call kprint_int
 	jmp $
 
 OFF equ main - 0x1000  

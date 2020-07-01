@@ -75,5 +75,26 @@ print_char:
 	popa
 	ret
 
+; Print the integer eax of colour ebx
+kprint_int:
+	pusha
+	.start:
+	mov edx, 0
+	mov ecx, 10
+	div ecx
+	mov ecx, edx
+	or ecx, eax
+	cmp ecx, 0
+	je .end
+	add edx, '0' 
+	push eax
+	mov eax, edx 
+	call print_char
+	pop eax
+	jmp .start
+	.end:
+	popa
+	ret
+
 kprintf:
 	
