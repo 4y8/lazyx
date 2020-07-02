@@ -12,6 +12,10 @@ main:
 	call print_char
 	mov eax, 2020
 	call kprint_int
+	mov eax, HELLO
+	push 2020
+	call kprintf
+	pop eax
 	jmp $
 
 OFF equ main - 0x1000  
@@ -20,4 +24,4 @@ VIDEO_MEMORY equ 0xA0000
 ; %include "lib/graphics/font.asm"
 ; %include "lib/graphics/shapes.asm"
 %include "driver/screen.asm"
-HELLO: db "Hello World!\n", 10, 0
+HELLO: db "Hello World %d!\n", 10, 0

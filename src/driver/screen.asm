@@ -54,7 +54,7 @@ print_string:
 	popa
 	ret	
 
-; Print the character eax of the colour ebx
+; Prints the character eax of the colour ebx.
 print_char:
 	pusha
 	push eax
@@ -75,12 +75,12 @@ print_char:
 	popa
 	ret
 
-; Print the integer eax of colour ebx
+; Prints the integer eax of colour ebx.
 kprint_int:
 	pusha
 	mov edi, .kprint_buffer + 126 - OFF
 	.start:
-	mov edx, 0
+	xor edx, edx 
 	mov ecx, 10
 	div ecx
 	mov ecx, edx
@@ -100,5 +100,51 @@ kprint_int:
 	ret
 	.kprint_buffer: times 128 db 0 
 
+; Printf the string at address eax with the arguments pushed right-first on the
+; stack. The stack is cleaned by the function. The colour of the string is in ebx.
 kprintf:
+	push eax
+	push ecx
+	push edx
+	mov ecx, 20
+	sub eax, OFF
+	.main_loop:
+	mov dl, [eax]
+	cmp dl, 0
+	je .end
+	cmp dl, '%'
+	jne .normal_char
+	.special_char:
+	inc eax
+	mov dl, [eax]
+	push eax
+	mov eax, [esp + ecx]
+	add ecx, 4
+	cmp dl, 'd'
+	jne .aft1
+	call kprint_int
+	jmp .end_spe
+	.aft1:
+	cmp dl, 's'
+	jne .aft2
+	call print_string
+	jmp .end_spe
+	.aft2:
+	call print_char
+	.end_spe:
+	pop eax
+	inc eax
+	jmp .main_loop
+	.normal_char:
+	push eax
+	mov al, dl
+	call print_char
+	pop eax
+	inc eax
+	jmp .main_loop
+	.end:
+	pop edx
+	pop ecx
+	pop eax
+	ret
 	
