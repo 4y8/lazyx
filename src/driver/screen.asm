@@ -101,7 +101,7 @@ kprint_int:
 	.kprint_buffer: times 128 db 0 
 
 ; Printf the string at address eax with the arguments pushed right-first on the
-; stack. The stack is cleaned by the function. The colour of the string is in ebx.
+; stack. The colour of the string is in ebx.
 kprintf:
 	push eax
 	push ecx
@@ -136,10 +136,24 @@ kprintf:
 	inc eax
 	jmp .main_loop
 	.normal_char:
+	cmp dl, '\'
+	je .escape_char
 	push eax
 	mov al, dl
 	call print_char
 	pop eax
+	inc eax
+	jmp .main_loop
+	.escape_char:
+	inc eax
+	mov dl, [eax]
+	cmp dl, 'n'
+	jne .non_nl
+	mov byte [cursor_x - OFF], 0
+	inc BYTE [cursor_y - OFF]
+	jmp .end_esc 
+	.non_nl:
+	.end_esc:
 	inc eax
 	jmp .main_loop
 	.end:
