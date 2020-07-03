@@ -9,6 +9,33 @@ main:
 	inc dx
 	mov al, 0x20
 	out dx, al
+	push KERNEL_LOAD
+	push 0
+	push 0
+	push 0
+	push 16 
+	push 0
+	push 0
+	push 0
+	push 0
+	push 0
+	push 0
+	push KERNEL_LOAD
+	call create_file
+	pop eax
+	pop eax
+	pop eax
+	pop eax
+	pop eax
+	pop eax
+	pop eax
+	pop eax
+	pop eax
+	pop eax
+	pop eax
+	mov eax, file_system + 4
+	mov ebx, 0x1F
+	call print_string
 	jmp $
 
 OFF equ main - 0x1000  
@@ -22,21 +49,22 @@ VIDEO_MEMORY equ 0xA0000
 KERNEL_LOAD: db "Kernel loaded!", 10, 0
 ; UStar File system
 file_system:
-	first_file:
-	times 100 db 0 ; File name
-	times 8   db 0 ; File mode
-	times 8   db 0 ; Owner's id
-	times 8   db 0 ; Group's id
-	times 12  db 0 ; File size
-	times 12  db 0 ; Last modification time
-	times 8   db 0 ; Checksum
-	times 1   db 0 ; Type flag
-	times 100 db 0 ; Linked file name
-	times 6   db 0 ; UStar indicator
-	times 2   db 0 ; UStar version
-	times 32  db 0 ; Owner's name
-	times 32  db 0 ; Group's name
-	times 8   db 0 ; Device major number
-	times 8   db 0 ; Device minor number
-	times 155 db 0 ; Filename prefix
+	times 0x1000 dd 0
+;	first_file:
+;	times 100 db 0 ; File name
+;	times 8   db 0 ; File mode
+;	times 8   db 0 ; Owner's id
+;	times 8   db 0 ; Group's id
+;	times 12  db 0 ; File size
+;	times 12  db 0 ; Last modification time
+;	times 8   db 0 ; Checksum
+;	times 1   db 0 ; Type flag
+;	times 100 db 0 ; Linked file name
+;	times 6   db 0 ; UStar indicator
+;	times 2   db 0 ; UStar version
+;	times 32  db 0 ; Owner's name
+;	times 32  db 0 ; Group's name
+;	times 8   db 0 ; Device major number
+;	times 8   db 0 ; Device minor number
+;	times 155 db 0 ; Filename prefix
 
