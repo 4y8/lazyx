@@ -4,7 +4,8 @@ memcpy:
 	.main_loop:
 	cmp ecx, 0
 	je .end
-	mov BYTE [eax], BYTE [ebx]
+	mov cl, [ebx]
+	mov [eax], cl
 	inc eax
 	inc ebx
 	dec ecx
@@ -20,7 +21,8 @@ strcpy:
 	mov cl, [ebx]
 	cmp cl, 0
 	je .end
-	mov BYTE [eax], BYTE [ebx]
+	mov cl, [ebx]
+	mov [eax], cl
 	inc eax
 	inc ebx
 	dec ecx
