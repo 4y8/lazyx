@@ -57,7 +57,7 @@ create_file:
 	mov [edi + 4], ebx
 	mov [edi + 8], ecx
 	; Copy owner's name
-	add edi, 125
+	add edi, 137 
 	add edi, OFF
 	mov eax, edi
 	sub edi, OFF
@@ -67,7 +67,6 @@ create_file:
 	add edi, 32
 	add edi, OFF
 	mov eax, edi
-	sub edi, OFF
 	sub edi, OFF
 	mov ebx, [esp + 60]
 	call strcpy
@@ -93,10 +92,10 @@ create_file:
 	add eax, 4 
 	jmp .file_size_loop
 	.file_size_end:
-	add edi, 155
+	add edi, 167
 	mov esi, edi
-	sub esi, 512
-	mov ebx, [esp + 70]
+	sub esi, 512 
+	mov ebx, [esp + 68]
 	mov ecx, 512
 	.store_file:
 	cmp edx, 508
@@ -114,6 +113,7 @@ create_file:
 	jmp .store_file
 	.end:
 	call find_free_block
+	mov [esi], edi
 	mov DWORD [edi], 1
 	add edi, 4
 	add edi, OFF
