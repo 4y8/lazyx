@@ -33,7 +33,7 @@ main:
 	pop eax
 	pop eax
 	pop eax
-	mov eax, [file_system - OFF]
+	mov eax, [file_system - OFF + 508]
 	add eax, OFF
 	add eax, 4 
 	mov ebx, 0x1F

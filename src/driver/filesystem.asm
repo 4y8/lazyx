@@ -29,7 +29,8 @@ create_file:
 	push edi
 	mov edi, file_system - OFF
 	call find_free_block
-	add edi, 4
+	mov BYTE [edi], -1
+	inc edi
 	; Copy the file's name
 	add edi, OFF
 	mov eax, edi
@@ -92,9 +93,9 @@ create_file:
 	add eax, 4 
 	jmp .file_size_loop
 	.file_size_end:
-	add edi, 167
+	add edi, 170
 	mov esi, edi
-	sub esi, 512 
+	sub esi, 4 
 	mov ebx, [esp + 68]
 	mov ecx, 512
 	.store_file:
@@ -125,4 +126,8 @@ create_file:
 	pop ecx
 	pop ebx
 	pop eax
+	ret
+
+; 
+load_file:
 	ret
