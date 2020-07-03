@@ -6,8 +6,8 @@ memcpy:
 	.main_loop:
 	cmp ecx, 0
 	je .end
-	mov cl, [ebx]
-	mov [eax], cl
+	mov dl, [ebx]
+	mov [eax], dl
 	inc eax
 	inc ebx
 	dec ecx
