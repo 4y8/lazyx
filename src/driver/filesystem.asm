@@ -31,7 +31,7 @@ create_file:
 	push edi
 	mov edi, file_system - OFF
 	call find_free_block
-	add edi, 3
+	add edi, 4
 	; Copy the file's name
 	mov eax, edi
 	mov ebx, [esp + 24]
@@ -57,7 +57,7 @@ create_file:
 	mov [edi + 4], ebx
 	mov [edi + 8], ecx
 	; Copy owner's name
-	add edi, 126
+	add edi, 125
 	mov eax, edi
 	mov ebx, [esp + 58]
 	call strcpy
@@ -77,25 +77,39 @@ create_file:
 	.file_size_loop:
 	cmp dl, 12
 	je .file_size_end
-	shl ecx, 3
+	shl edx, 3
 	mov bl, [eax]
-	add ecx, ebx
-	sub ecx, '0'
+	add edx, ebx
+	sub edx, '0'
 	dec dl
 	inc eax
 	jmp .file_size_loop
 	.file_size_end:
 	add edi, 155
-	mov esi, edi
 	call find_free_block
-	mov [esi - 512], edi
+	mov esi, edi
+	sub esi, 512
+	mov ebx, [esp + 70]
+	mov ecx, 512
 	.store_file:
 	cmp ecx, 508
 	jle .end	
 	call find_free_block
-	sub ecx, 508
+	mov [esi], edi
+	mov esi, edi	
+	mov eax, edi
+	add eax, 4
+	call memcpy
+	add ebx, 508
+	sub edx, 508
 	jmp .store_file
 	.end:
+	call find_free_block
+	mov DWORD [edi], 1
+	add edi, 4
+	mov eax, edi
+	mov ecx, edx
+	call memcpy
 	pop edi
 	pop edx
 	pop ecx
