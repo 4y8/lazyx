@@ -16,38 +16,16 @@ create_file:
 	push edx
 	push edi
 	mov edi, file_system - OFF
-	.main_loop:
-	mov dx, [edi + 263 - OFF] ; Check if the block is used
-	cmp dx, 4848
-	xor edx, edx
-	xor ebx, ebx
-	jne .allocate_block
-	.get_file_size:
-	mov dl, 0
-	.file_size_loop:
-	cmp dl, 12
-	je .file_size_end
-	shl ecx, 3
-	mov dh, [edi + 124 + ebx - OFF]
-	add ecx, edx
-	sub ecx, '0'
-	dec dl
-	jmp .file_size_loop
-	.file_size_end:
-	; Round up the size to 512 (size of a sector).
-	add ebx, 511 ; ebx += 511
-	shr ebx, 9   ; ebx /= 512
-	inc ebx      ; ++ebx
-	shl ebx, 9   ; ebx *= 512
-	add edi, ebx
+	.find_free_block:
+	mov dl, [edi]
+	cmp dl, -1
+	je .allocate_block
+	add edi, 512
+	jmp .find_free_block
 	.allocate_block:
-	; Cleans the space of the file's name
-	mov eax, 0	
-	mov ebx, 100
-	rep stosb
 	; Copy the file's name
 	mov eax, edi
-	mov ebx [esp + 24]
+	mov ebx, [esp + 24]
 	call strcpy
 	; Copy user id
 	add edi, 108
@@ -61,6 +39,45 @@ create_file:
 	mov ebx, [esp + 42]
 	mov [edi], eax
 	mov [edi + 4], ebx
+	; Copy file size
+	add edi, 8
+	mov eax, [esp + 46]
+	mov ebx, [esp + 50]
+	mov ecx, [esp + 54]
+	mov [edi], eax
+	mov [edi + 4], ebx
+	mov [edi + 8], ecx
+	; Copy owner's name
+	add edi, 129
+	mov eax, edi
+	mov ebx, [esp + 58]
+	call strcpy
+	; Copy group's name
+	add edi, 32
+	mov eax, edi
+	mov ebx, [esp + 62]
+	call strcpy
+	; Copy the path
+	add edi, 48
+	mov eax, edi
+	mov ebx, [esp + 66]
+	.get_file_size:
+	mov ecx, 0
+	mov eax, esp + 46
+	mov dl, 0
+	.file_size_loop:
+	cmp dl, 12
+	je .file_size_end
+	shl ecx, 3
+	mov dh, [eax]
+	add ecx, edx
+	sub ecx, '0'
+	dec dl
+	inc eax
+	jmp .file_size_loop
+	.file_size_end:
+	add edi, 155
+	.store_file
 	pop edi
 	pop edx
 	pop ecx

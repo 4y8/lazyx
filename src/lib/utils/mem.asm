@@ -6,7 +6,7 @@ memcpy:
 	je .end
 	mov BYTE [eax], BYTE [ebx]
 	inc eax
-	inc ebs
+	inc ebx
 	dec ecx
 	jmp .main_loop
 	.end:
@@ -22,9 +22,10 @@ strcpy:
 	je .end
 	mov BYTE [eax], BYTE [ebx]
 	inc eax
-	inc ebs
+	inc ebx
 	dec ecx
 	jmp .main_loop
 	.end:
+	mov BYTE [eax + 1], 0
 	popa
 	ret

@@ -161,4 +161,3 @@ kprintf:
 	pop ecx
 	pop eax
 	ret
-	
