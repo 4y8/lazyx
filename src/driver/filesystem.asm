@@ -9,6 +9,7 @@ find_free_block:
 	add edi, 512
 	jmp .find_free_block
 	.end:
+	sub edi, file_system
 	pop edx
 	ret
 
@@ -30,6 +31,7 @@ create_file:
 	push edi
 	mov edi, file_system
 	call find_free_block
+	add edi, file_system
 	mov BYTE [edi], -1
 	inc edi
 	; Copy the file's name
@@ -106,6 +108,7 @@ create_file:
 	.end:
 	call find_free_block
 	mov [esi], edi
+	add edi, file_system
 	mov DWORD [edi], 0 
 	add edi, 4
 	mov eax, edi
@@ -139,7 +142,7 @@ load_file:
 	.loop:
 	cmp edx, 508
 	jle .end
-	add ebx, 4
+	add ebx, 4 + file_system
 	call memcpy
 	sub ebx, 4
 	add eax, 508
@@ -148,7 +151,7 @@ load_file:
 	jmp .loop
 	.end:
 	mov ebx, [ebx]
-	add ebx, 4
+	add ebx, 4 + file_system
 	mov ecx, edx
 	call memcpy
 	popa
