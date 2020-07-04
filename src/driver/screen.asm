@@ -7,13 +7,13 @@ load_cursor_pos:
 	push edx
 	push esi
 	mov eax, 0xB8000
-	mov edx, [cursor_y - OFF]
+	mov edx, [cursor_y]
 	and edx, 0xFF
 	mov esi, edx ; Multiply edx by 80, 80 * edx = 64 * edx + 16 * edx
 	shl esi, 4   ;                              = edx << 6 + edx << 4
 	shl edx, 6
 	add edx, esi
-	mov ecx, [cursor_x - OFF]
+	mov ecx, [cursor_x]
 	and ecx, 0xFF
 	add edx, ecx
 	shl edx, 1
@@ -27,7 +27,6 @@ load_cursor_pos:
 ; Prints the string at the memory position eax on the screen and of colour ebx.
 print_string:
 	pusha
-	sub eax, OFF
 	push eax
 	call load_cursor_pos
 	mov edi, eax
@@ -39,15 +38,15 @@ print_string:
 	je .end
 	cmp bl, 10 ; Check for newline 
 	jne .continue
-	inc BYTE [cursor_y - OFF]
-	mov edi, [cursor_y - OFF]
+	inc BYTE [cursor_y]
+	mov edi, [cursor_y]
 	imul edi, 160
 	add edi, 0xB8000
-	mov BYTE [cursor_x - OFF], -1 
+	mov BYTE [cursor_x], -1 
 	.continue:
 	mov [edi], bx
 	inc eax
-	inc BYTE [cursor_x - OFF]
+	inc BYTE [cursor_x]
 	add edi, 2
 	jmp .start
 	.end:
@@ -64,21 +63,21 @@ print_char:
 	shl bx, 8 
 	cmp al, 10
 	jne .end
-	mov BYTE [cursor_x - OFF], 0 
-	inc BYTE [cursor_y - OFF]
+	mov BYTE [cursor_x], 0 
+	inc BYTE [cursor_y]
 	popa
 	ret 
 	.end:
 	mov bl, al
 	mov [edi], bx
-	inc BYTE [cursor_x - OFF]
+	inc BYTE [cursor_x]
 	popa
 	ret
 
 ; Prints the integer eax of colour ebx.
 kprint_int:
 	pusha
-	mov edi, .kprint_buffer + 126 - OFF
+	mov edi, .kprint_buffer + 126	
 	.start:
 	xor edx, edx 
 	mov ecx, 10
@@ -93,7 +92,6 @@ kprint_int:
 	jmp .start
 	.end:
 	inc edi
-	add edi, OFF
 	mov eax, edi
 	call print_string
 	popa
@@ -107,7 +105,6 @@ kprintf:
 	push ecx
 	push edx
 	mov ecx, 20
-	sub eax, OFF
 	.main_loop:
 	mov dl, [eax]
 	cmp dl, 0
@@ -149,8 +146,8 @@ kprintf:
 	mov dl, [eax]
 	cmp dl, 'n'
 	jne .non_nl
-	mov byte [cursor_x - OFF], 0
-	inc BYTE [cursor_y - OFF]
+	mov byte [cursor_x], 0
+	inc BYTE [cursor_y]
 	jmp .end_esc 
 	.non_nl:
 	.end_esc:

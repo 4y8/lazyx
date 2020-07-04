@@ -1,3 +1,5 @@
+[org 0x1000]
+[bits 32]
 main:
 	mov ebx, 0x1F
 	mov eax, KERNEL_LOAD
@@ -40,10 +42,11 @@ main:
 	call print_string
 	jmp $
 
-OFF equ main - 0x1000  
+OFF equ 0; main - 0x1000  
 %include "lib/text/text.asm"
 %include "driver/screen.asm"
 %include "driver/filesystem.asm"
 %include "lib/utils/mem.asm"
 KERNEL_LOAD: db "Kernel loaded!", 10, 0
+FS_END equ file_system + 8192
 file_system:

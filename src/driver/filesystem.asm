@@ -28,14 +28,12 @@ create_file:
 	push ecx
 	push edx
 	push edi
-	mov edi, file_system - OFF
+	mov edi, file_system
 	call find_free_block
 	mov BYTE [edi], -1
 	inc edi
 	; Copy the file's name
-	add edi, OFF
 	mov eax, edi
-	sub edi, OFF
 	mov ebx, [esp + 24]
 	call strcpy
 	; Copy user id
@@ -60,23 +58,17 @@ create_file:
 	mov [edi + 8], ecx
 	; Copy owner's name
 	add edi, 137 
-	add edi, OFF
 	mov eax, edi
-	sub edi, OFF
 	mov ebx, [esp + 56]
 	call strcpy
 	; Copy group's name
 	add edi, 32
-	add edi, OFF
 	mov eax, edi
-	sub edi, OFF
 	mov ebx, [esp + 60]
 	call strcpy
 	; Copy the path
 	add edi, 48
-	add edi, OFF
 	mov eax, edi
-	sub edi, OFF
 	mov ebx, [esp + 64]
 	call strcpy
 	.get_file_size:
@@ -105,9 +97,7 @@ create_file:
 	call find_free_block
 	mov [esi], edi
 	mov esi, edi	
-	add edi, OFF
 	mov eax, edi
-	sub edi, OFF
 	add eax, 4
 	call memcpy
 	add ebx, 508
@@ -118,7 +108,6 @@ create_file:
 	mov [esi], edi
 	mov DWORD [edi], 0 
 	add edi, 4
-	add edi, OFF
 	mov eax, edi
 	mov ecx, edx
 	call memcpy
@@ -150,9 +139,9 @@ load_file:
 	.loop:
 	cmp edx, 508
 	jle .end
-	add ebx, OFF + 4
+	add ebx, 4
 	call memcpy
-	sub ebx, OFF - 4
+	sub ebx, 4
 	add eax, 508
 	mov ebx, [ebx]
 	sub edx, 508
@@ -161,7 +150,6 @@ load_file:
 	mov ebx, [ebx]
 	add ebx, 4
 	mov ecx, edx
-	add ebx, OFF
 	call memcpy
 	popa
 	ret

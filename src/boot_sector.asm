@@ -82,7 +82,5 @@ BOOT_DRIVE db 0
 times 510-($-$$) db 0
 dw 0xaa55
 
-%include "kernel.asm"
-
 CODE_SEG     equ gdt_code - gdt_start
 DATA_SEG     equ gdt_data - gdt_start

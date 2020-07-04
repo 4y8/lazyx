@@ -1,8 +1,6 @@
 ; Copies ecx bytes from ebx to eax
 memcpy:
 	pusha
-	sub eax, OFF
-	sub ebx, OFF
 	.main_loop:
 	cmp ecx, 0
 	je .end
@@ -19,8 +17,6 @@ memcpy:
 ; Copies the string from ebx to eax
 strcpy:
 	pusha
-	sub eax, OFF
-	sub ebx, OFF
 	.main_loop:
 	mov cl, [ebx]
 	mov [eax], cl
