@@ -33,9 +33,9 @@ main:
 	pop eax
 	pop eax
 	pop eax
-	mov eax, [file_system - OFF + 508]
-	add eax, OFF
-	add eax, 4 
+	mov ebx, file_system
+	mov eax, 0x10000
+	call load_file
 	mov ebx, 0x1F
 	call print_string
 	jmp $

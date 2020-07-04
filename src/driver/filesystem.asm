@@ -1,14 +1,5 @@
-; Create a file with the following parameters on the stack:
-; [esp] - address
-;         *name
-;         user id (64 bits, higher firsts)
-;         group id (64 bits, higher firsts)
-;         size (96 bits, higher firsts)
-;         *user name
-;         *group name
-;         *path
-;         *content
-
+; Search from edi a block of free memory in the file system and stores its
+; address in edi.
 find_free_block:
 	push edx
 	.find_free_block:
@@ -21,6 +12,16 @@ find_free_block:
 	pop edx
 	ret
 
+; Create a file with the following parameters on the stack:
+; [esp] - address
+;         *name
+;         user id (64 bits, higher firsts)
+;         group id (64 bits, higher firsts)
+;         size (96 bits, higher firsts)
+;         *user name
+;         *group name
+;         *path
+;         *content
 create_file:
 	push eax
 	push ebx
@@ -115,7 +116,7 @@ create_file:
 	.end:
 	call find_free_block
 	mov [esi], edi
-	mov DWORD [edi], 1
+	mov DWORD [edi], 0 
 	add edi, 4
 	add edi, OFF
 	mov eax, edi
@@ -128,6 +129,39 @@ create_file:
 	pop eax
 	ret
 
-; 
+; Load the file with its descriptor at the address ebx, at the address eax. 
 load_file:
+	pusha
+	mov edx, 0
+	add ebx, 125
+	sub ebx, OFF
+	mov cl, 0
+	.get_size:
+	cmp cl, 3 
+	je .end_size
+	shl edx, 8
+	add edx, [ebx]
+	add ebx, 4
+	inc cl
+	jmp .get_size
+	.end_size:
+	add ebx, 371
+	mov ecx, 508
+	.loop:
+	cmp edx, 508
+	jle .end
+	add ebx, OFF + 4
+	call memcpy
+	sub ebx, OFF - 4
+	add eax, 508
+	mov ebx, [ebx]
+	sub edx, 508
+	jmp .loop
+	.end:
+	mov ebx, [ebx]
+	add ebx, 4
+	mov ecx, edx
+	add ebx, OFF
+	call memcpy
+	popa
 	ret
