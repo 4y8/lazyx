@@ -88,7 +88,7 @@ create_file:
 	.file_size_loop:
 	cmp cl, 3 
 	je .file_size_end
-	shl edx, 8 
+	shl edx, 32
 	add edx, [esp + eax] 
 	inc cl
 	add eax, 4 
@@ -139,7 +139,7 @@ load_file:
 	.get_size:
 	cmp cl, 3 
 	je .end_size
-	shl edx, 8
+	shl edx, 32 
 	add edx, [ebx]
 	add ebx, 4
 	inc cl
@@ -166,13 +166,12 @@ load_file:
 	popa
 	ret
 
-
 ; Delete the file with its descriptor at the address eax.
 delete_file:
 	pusha
 	mov ebx, eax
 	mov eax, [eax + 508]
-	mov QWORD [ebx], 0
+	mov DWORD [ebx], 0
 	.loop:
 	cmp eax, 0 
 	je .end

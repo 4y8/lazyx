@@ -41,13 +41,9 @@ main:
 	jmp $
 
 OFF equ main - 0x1000  
-VIDEO_MEMORY equ 0xA0000
 %include "lib/text/text.asm"
-; %include "lib/graphics/font.asm"
-; %include "lib/graphics/shapes.asm"
 %include "driver/screen.asm"
 %include "driver/filesystem.asm"
 %include "lib/utils/mem.asm"
 KERNEL_LOAD: db "Kernel loaded!", 10, 0
-; UStar File system
 file_system:
