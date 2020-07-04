@@ -165,3 +165,20 @@ load_file:
 	call memcpy
 	popa
 	ret
+
+
+; Delete the file with its descriptor at the address eax.
+delete_file:
+	pusha
+	mov ebx, eax
+	mov eax, [eax + 508]
+	mov QWORD [ebx], 0
+	.loop:
+	cmp eax, 0 
+	je .end
+	mov DWORD [eax], 0
+	mov eax, [eax]
+	jmp .loop
+	.end:
+	popa
+	ret
