@@ -2,15 +2,13 @@
 #include "fs.h"
 
 char *
-long_to_chars(long l, char *c, int n)
+long_to_chars(unsigned long l, char *c, int n)
 {
-        long j;
 
-        j = 256;
         --c;
         for (int i = 0; i < n; ++i) {
-                *(++c) = l & j;
-                j <<= 3;
+                *(++c) = (char)(l & 255);
+                l >>= 3;
         }
 
         return c;
@@ -20,8 +18,8 @@ char *
 create_file(file f)
 {
         char *c;
-        long pos;
-        int prev;
+        unsigned long pos;
+        unsigned long prev;
 
         c = calloc((((f.size + 511) >> 9) + 2) << 9, sizeof(char));
         if (!c) {

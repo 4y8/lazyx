@@ -11,35 +11,38 @@ main:
 	inc dx
 	mov al, 0x20
 	out dx, al
-	push KERNEL_LOAD
-	push 0
-	push 0
-	push 0
-	push 16 
-	push 0
-	push 0
-	push 0
-	push 0
-	push 0
-	push 0
-	push KERNEL_LOAD
-	call create_file
-	pop eax
-	pop eax
-	pop eax
-	pop eax
-	pop eax
-	pop eax
-	pop eax
-	pop eax
-	pop eax
-	pop eax
-	pop eax
+;	push KERNEL_LOAD
+;	push 0
+;	push 0
+;	push 0
+;	push 16 
+;	push 0
+;	push 0
+;	push 0
+;	push 0
+;	push 0
+;	push 0
+;	push KERNEL_LOAD
+;	call create_file
+;	pop eax
+;	pop eax
+;	pop eax
+;	pop eax
+;	pop eax
+;	pop eax
+;	pop eax
+;	pop eax
+;	pop eax
+;	pop eax
+;	pop eax
 	mov ebx, file_system
 	mov eax, 0x10000
-	call load_file
+	;call load_file
+	mov eax, file_system
 	mov ebx, 0x1F
 	call print_string
+	mov eax, [file_system + 508]
+	call kprint_int
 	jmp $
 
 OFF equ 0; main - 0x1000  
