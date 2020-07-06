@@ -109,7 +109,7 @@ create_file:
 	call find_free_block
 	mov [esi], edi
 	add edi, file_system
-	mov DWORD [edi], 0 
+	mov DWORD [edi], 1
 	add edi, 4
 	mov eax, edi
 	mov ecx, edx

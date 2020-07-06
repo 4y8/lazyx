@@ -78,6 +78,8 @@ print_char:
 kprint_int:
 	pusha
 	mov edi, .kprint_buffer + 126	
+	cmp eax, 0
+	je .zero
 	.start:
 	xor edx, edx 
 	mov ecx, 10
@@ -90,6 +92,9 @@ kprint_int:
 	mov [edi], dl 
 	dec edi
 	jmp .start
+	.zero:
+	mov BYTE [edi], '0'
+	dec edi
 	.end:
 	inc edi
 	mov eax, edi
