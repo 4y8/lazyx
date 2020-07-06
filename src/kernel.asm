@@ -37,10 +37,11 @@ main:
 ;	pop eax
 	mov ebx, file_system
 	mov eax, 0x10000
-	;call load_file
-	mov eax, file_system
+	call load_file
+	;mov eax, file_system
 	mov ebx, 0x1F
 	call print_string
+	mov eax, 0
 	mov eax, [file_system + 508]
 	call kprint_int
 	jmp $

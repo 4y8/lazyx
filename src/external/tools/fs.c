@@ -1,17 +1,15 @@
 #include <string.h>
 #include "fs.h"
 
-char *
+void
 long_to_chars(unsigned long l, char *c, int n)
 {
 
         --c;
         for (int i = 0; i < n; ++i) {
                 *(++c) = (char)(l & 255);
-                l >>= 3;
+                l >>= 8;
         }
-
-        return c;
 }
 
 char *
@@ -25,8 +23,7 @@ create_file(file f)
         if (!c) {
                 puts("Error: Unable to allocate memory.");
                 exit(1);
-        }
-        strncpy(c, f.name, 100);
+        } strncpy(c, f.name, 100);
         long_to_chars(f.uid, c + 108, 8);
         long_to_chars(f.gid, c + 116, 8);
         long_to_chars(f.size, c + 128, 8);
@@ -56,8 +53,7 @@ main(int argc, char **argv)
         if (argc < 2) {
                 puts("Error: The program has to be called with an argument.");
                 exit(1);
-        }
-        f.file = fopen(argv[1], "r");
+        } f.file = fopen(argv[1], "r");
         f.name = argv[1];
         f.uid = 0;
         f.gid = 0;

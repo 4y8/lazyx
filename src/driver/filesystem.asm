@@ -126,7 +126,6 @@ load_file:
 	pusha
 	mov edx, 0
 	add ebx, 125
-	sub ebx, OFF
 	mov cl, 0
 	.get_size:
 	cmp cl, 3 
@@ -137,6 +136,9 @@ load_file:
 	inc cl
 	jmp .get_size
 	.end_size:
+	mov eax, edx
+	mov ebx, 0x1F
+	call kprint_int
 	add ebx, 371
 	mov ecx, 508
 	.loop:
