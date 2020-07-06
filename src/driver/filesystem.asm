@@ -141,6 +141,7 @@ load_file:
 	call kprint_int
 	add ebx, 371
 	mov ecx, 508
+	%if 0
 	.loop:
 	cmp edx, 508
 	jle .end
@@ -151,6 +152,7 @@ load_file:
 	mov ebx, [ebx]
 	sub edx, 508
 	jmp .loop
+	%endif
 	.end:
 	mov ebx, [ebx]
 	add ebx, 4 + file_system

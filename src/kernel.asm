@@ -38,7 +38,7 @@ main:
 	mov ebx, file_system
 	mov eax, 0x10000
 	call load_file
-	;mov eax, file_system
+	mov eax, file_system + 1024
 	mov ebx, 0x1F
 	call print_string
 	mov eax, 0
@@ -46,7 +46,6 @@ main:
 	call kprint_int
 	jmp $
 
-OFF equ 0; main - 0x1000  
 %include "lib/text/text.asm"
 %include "driver/screen.asm"
 %include "driver/filesystem.asm"

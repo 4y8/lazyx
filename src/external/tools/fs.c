@@ -39,6 +39,7 @@ create_file(file f)
                 pos += 512;
                 f.size -= 508;
         } long_to_chars(pos, c + prev, 4);
+        long_to_chars(0, c + pos, 4);
         fread(c + pos + 4, f.size, 1, f.file);
         return c;
 }
