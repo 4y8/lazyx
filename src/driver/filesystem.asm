@@ -136,9 +136,6 @@ load_file:
 	inc cl
 	jmp .get_size
 	.end_size:
-	mov eax, edx
-	mov ebx, 0x1F
-	call kprint_int
 	add ebx, 371
 	mov ecx, 508
 	%if 0
@@ -152,11 +149,12 @@ load_file:
 	mov ebx, [ebx]
 	sub edx, 508
 	jmp .loop
-	%endif
 	.end:
+	%endif
 	mov ebx, [ebx]
 	add ebx, 4 + file_system
 	mov ecx, edx
+	mov ecx, 508
 	call memcpy
 	popa
 	ret
