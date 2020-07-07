@@ -4,9 +4,9 @@
 #include <stdio.h>
 
 typedef struct file {
-        long size;
-        long uid;
-        long gid;
+        long long size;
+        long long uid;
+        long long gid;
         char *name;
         char *path;
         char *uname;

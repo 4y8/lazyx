@@ -28,3 +28,17 @@ strcpy:
 	.end:
 	popa
 	ret
+
+; Allocate eax bytes of memory 
+malloc:
+	push ebx
+	mov ebx, [.p]
+	add [.p], eax
+	mov eax, ebx
+	add ebx, FS_END
+	pop ebx
+	ret
+	.p : dd 0
+
+free:
+	ret

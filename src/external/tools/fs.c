@@ -2,7 +2,7 @@
 #include "fs.h"
 
 void
-long_to_chars(unsigned long l, char *c, int n)
+long_to_chars(unsigned long long l, char *c, int n)
 {
 
         --c;
@@ -23,13 +23,14 @@ create_file(file f)
         if (!c) {
                 puts("Error: Unable to allocate memory.");
                 exit(1);
-        } strncpy(c, f.name, 100);
-        long_to_chars(f.uid, c + 108, 8);
-        long_to_chars(f.gid, c + 116, 8);
-        long_to_chars(f.size, c + 128, 8);
-        strncpy(c + 261, f.uname, 32);
-        strncpy(c + 293, f.gname, 32);
-        strncpy(c + 341, f.path, 167);
+        } strncpy(c + 1, f.name, 100);
+        long_to_chars(f.uid, c + 109, 8);
+        long_to_chars(f.gid, c + 117, 8);
+        long_to_chars(f.size >> 32, c + 129, 4);
+        long_to_chars(f.size, c + 133, 4);
+        strncpy(c + 262, f.uname, 32);
+        strncpy(c + 294, f.gname, 32);
+        strncpy(c + 342, f.path, 167);
         pos = 512;
         prev = 508;
         while (f.size >= 508) {

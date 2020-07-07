@@ -23,7 +23,7 @@ main:
 	push 0
 	push 0
 	push KERNEL_LOAD
-	call create_file
+	;call create_file
 	pop eax
 	pop eax
 	pop eax
@@ -38,7 +38,6 @@ main:
 	mov eax, FS_END
 	mov ebx, file_system
 	call load_file
-	mov eax, FS_END 
 	mov ebx, 0x1F
 	call print_string
 	jmp $
