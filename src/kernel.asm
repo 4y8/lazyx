@@ -15,7 +15,7 @@ main:
 	push 0
 	push 0
 	push 0
-	push 512 
+	push 1024 
 	push 0
 	push 0
 	push 0
@@ -38,7 +38,7 @@ main:
 	mov eax, FS_END
 	mov ebx, file_system
 	call load_file
-	mov eax, file_system + 516
+	mov eax, FS_END 
 	mov ebx, 0x1F
 	call print_string
 	jmp $
@@ -48,7 +48,7 @@ main:
 %include "driver/filesystem.asm"
 %include "lib/utils/mem.asm"
 KERNEL_LOAD: db "Kernel loaded!", 10, 0
-A: times 511 db 'a'
+A: times 1023 db 'a'
 db 0
 FS_END equ file_system + 8192
 file_system:

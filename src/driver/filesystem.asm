@@ -95,7 +95,8 @@ create_file:
 	mov ecx, 508
 	.store_file:
 	cmp edx, 508
-	jle .end	
+	jle .end
+	mov DWORD [esi], 1
 	call find_free_block
 	mov [esi], edi
 	add edi, file_system
@@ -107,6 +108,7 @@ create_file:
 	sub edx, 508
 	jmp .store_file
 	.end:
+	mov DWORD [esi], 1
 	call find_free_block
 	mov [esi], edi
 	add edi, file_system
