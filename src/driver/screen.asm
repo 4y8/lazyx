@@ -40,9 +40,12 @@ print_string:
 	jne .continue
 	inc BYTE [cursor_y]
 	mov edi, [cursor_y]
+	and edi, 0xFF
 	imul edi, 160
 	add edi, 0xB8000
-	mov BYTE [cursor_x], -1 
+	mov BYTE [cursor_x], 0 
+	inc eax
+	jmp .start
 	.continue:
 	mov [edi], bx
 	inc eax

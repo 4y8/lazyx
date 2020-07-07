@@ -46,7 +46,7 @@ main:
 %include "driver/screen.asm"
 %include "driver/filesystem.asm"
 %include "lib/utils/mem.asm"
-KERNEL_LOAD: db "Kernel loaded!", 10, 0
+KERNEL_LOAD: db "Kernel loaded!", 10, "Kernel loaded!",0
 A: times 1023 db 'a'
 db 0
 FS_END equ file_system + 8192
