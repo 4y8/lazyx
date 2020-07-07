@@ -90,14 +90,15 @@ create_file:
 	.file_size_end:
 	add edi, 170
 	mov esi, edi
-	sub esi, 4 
+	sub esi, 4
 	mov ebx, [esp + 68]
-	mov ecx, 512
+	mov ecx, 508
 	.store_file:
 	cmp edx, 508
 	jle .end	
 	call find_free_block
 	mov [esi], edi
+	add edi, file_system
 	mov esi, edi	
 	mov eax, edi
 	add eax, 4
@@ -124,7 +125,6 @@ create_file:
 ; Load the file with its descriptor at the address ebx, at the address eax. 
 load_file:
 	pusha
-	mov edx, 0
 	add ebx, 125
 	mov cl, 0
 	.get_size:
@@ -138,7 +138,7 @@ load_file:
 	.end_size:
 	add ebx, 371
 	mov ecx, 508
-	%if 0
+	mov ebx, [ebx]
 	.loop:
 	cmp edx, 508
 	jle .end
@@ -150,8 +150,6 @@ load_file:
 	sub edx, 508
 	jmp .loop
 	.end:
-	%endif
-	mov ebx, [ebx]
 	add ebx, 4 + file_system
 	mov ecx, edx
 	mov ecx, 508

@@ -11,19 +11,18 @@ main:
 	inc dx
 	mov al, 0x20
 	out dx, al
+	push A 
+	push 0
+	push 0
+	push 0
+	push 512 
+	push 0
+	push 0
+	push 0
+	push 0
+	push 0
+	push 0
 	push KERNEL_LOAD
-	push 0
-	push 0
-	push 0
-	push 16 
-	push 0
-	push 0
-	push 0
-	push 0
-	push 0
-	push 0
-	push KERNEL_LOAD
-	call create_file
 	call create_file
 	pop eax
 	pop eax
@@ -37,14 +36,11 @@ main:
 	pop eax
 	pop eax
 	mov eax, FS_END
-	mov ebx, file_system + 1024
+	mov ebx, file_system
 	call load_file
-	;mov eax, file_system + 0x204
-	mov eax, FS_END
+	mov eax, file_system + 516
 	mov ebx, 0x1F
 	call print_string
-	mov eax, 0
-	call kprint_int
 	jmp $
 
 %include "lib/text/text.asm"
@@ -52,5 +48,7 @@ main:
 %include "driver/filesystem.asm"
 %include "lib/utils/mem.asm"
 KERNEL_LOAD: db "Kernel loaded!", 10, 0
+A: times 511 db 'a'
+db 0
 FS_END equ file_system + 8192
 file_system:
