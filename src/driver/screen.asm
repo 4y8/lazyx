@@ -1,6 +1,25 @@
 cursor_x: db 0
 cursor_y: db 0
 
+new_line:
+	push ecx
+	push ebx
+	push eax
+	inc BYTE [cursor_y]
+	mov BYTE [cursor_x], 0
+	mov al, [cursor_y]
+	cmp al, 25 
+	jne .end
+	mov eax, 0xB8000
+	mov ebx, 0xB8000 + 160
+	mov ecx, 4000
+	call memcpy
+	dec BYTE [cursor_y]
+	.end:
+	pop eax
+	pop ebx
+	pop ecx
+	ret
 
 load_cursor_pos:
 	push ecx
@@ -23,7 +42,6 @@ load_cursor_pos:
 	pop ecx
 	ret
 
-
 ; Prints the string at the memory position eax on the screen and of colour ebx.
 print_string:
 	pusha
@@ -38,12 +56,11 @@ print_string:
 	je .end
 	cmp bl, 10 ; Check for newline 
 	jne .continue
-	inc BYTE [cursor_y]
+	call new_line
 	mov edi, [cursor_y]
 	and edi, 0xFF
 	imul edi, 160
 	add edi, 0xB8000
-	mov BYTE [cursor_x], 0 
 	inc eax
 	jmp .start
 	.continue:
@@ -66,8 +83,7 @@ print_char:
 	shl bx, 8 
 	cmp al, 10
 	jne .end
-	mov BYTE [cursor_x], 0 
-	inc BYTE [cursor_y]
+	call new_line
 	popa
 	ret 
 	.end:
