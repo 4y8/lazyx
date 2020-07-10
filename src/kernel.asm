@@ -4,6 +4,7 @@ main:
 	mov ebx, 0x1F
 	mov eax, KERNEL_LOAD
 	call print_string
+	call print_string
 	; Hides the cursor
 	mov dx, 0x3D4
 	mov al, 0xA
@@ -11,17 +12,18 @@ main:
 	inc dx
 	mov al, 0x20
 	out dx, al
-	mov eax, FS_END
-	mov ebx, file_system
 	call load_file
 	mov ebx, 0x1F
-	call print_string
+	;call print_string
+	call isr_init
+	int 3
 	jmp $
 
 %include "lib/text/text.asm"
 %include "driver/screen.asm"
 %include "driver/filesystem.asm"
 %include "lib/utils/mem.asm"
+%include "cpu/idt.asm"
 KERNEL_LOAD: db "Kernel loaded!", 10, 0
 FS_END equ file_system + 8192
 file_system:

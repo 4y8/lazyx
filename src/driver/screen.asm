@@ -78,7 +78,7 @@ print_string:
 	.continue:
 	mov [edi], bx
 	inc eax
-	inc BYTE [cursor_x]
+	call add_char
 	add edi, 2
 	jmp .start
 	.end:

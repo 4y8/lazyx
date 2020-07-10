@@ -8,20 +8,19 @@ idt_ptr:
 idt_set_gate:
 	push eax
 	push ebx
+	shl ebx, 6 
 	add ebx, idt_entries
 	mov [ebx], ax
 	add ebx, 2
 	mov WORD [ebx], 0x08
-	add ebx, 2
+	add ebx, 3
 	mov BYTE [ebx], 0x8E
+	inc ebx
 	shr eax, 16
 	mov [ebx], ax
 	pop ebx
 	pop eax
 	ret
-
-load_idt:
-	lidt [idt_ptr]
 
 isr_init:
 	push eax
@@ -155,7 +154,7 @@ isr_init:
 	mov ebx, 31 
 	call idt_set_gate
 
-	call load_idt
+	lidt [idt_ptr]
 	pop ebx
 	pop eax
 	ret
@@ -380,3 +379,19 @@ isr31:
     push byte 0
     push byte 31
     jmp isr_common_stub
+
+isr_common_stub:
+	push eax
+	push ebx
+	mov ebx, 0x1F
+	mov eax, INTER
+	call print_string
+	mov eax, [esp + 8]
+	call kprint_int
+	pop ebx
+	pop eax
+	add esp, 8
+	sti
+	iret
+
+INTER: db "Received interrupt: ", 0
