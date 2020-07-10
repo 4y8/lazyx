@@ -6,12 +6,14 @@ idt_ptr:
 	dd idt_entries
 
 idt_set_gate:
-	shl ebx, 6 
+	shl ebx, 3 
 	add ebx, idt_entries
 	mov [ebx], ax
 	add ebx, 2
 	mov WORD [ebx], 0x08
-	add ebx, 3
+	add ebx, 2
+	mov BYTE [ebx], 0
+	inc ebx
 	mov BYTE [ebx], 0x8E
 	inc ebx
 	shr eax, 16
@@ -372,17 +374,27 @@ isr31:
     jmp isr_common_stub
 
 isr_common_stub:
-	push eax
-	push ebx
-	mov ebx, 0x1F
+	pusha ; Pushes edi, esi, ebp, esp, ebx, edx, ecx, eax.
+	mov ax, ds ; Lower 16-bits of eax = ds.
+	push eax ; Save the data segment descriptor.
+	mov ax, 0x10 ; Load the kernel data segment descriptor.
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
 	mov eax, INTER
+	mov ebx, 0x1F
 	call print_string
-	mov eax, [esp + 8]
+	mov eax, [esp + 28]
 	call kprint_int
-	pop ebx
-	pop eax
-	add esp, 8
-	sti
+	pop eax ; Reload the original data segment descriptor.
+	mov ds, ax
+	mov es, ax
+	mov fs, ax
+	mov gs, ax
+	popa ; Pops edi, esi, ebp, ...
+	add esp, 8 ; Cleans up the pushed error code and pushed ISR number.
+   	sti
 	iret
 
-INTER: db "Received interrupt: ", 10, 0
+INTER: db "Received interrupt: ", 0
