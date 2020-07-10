@@ -1,13 +1,11 @@
 idt_entries:
-	times 2047 db 0 
+	times 2048 db 0 
 
 idt_ptr:
 	dw 2047
 	dd idt_entries
 
 idt_set_gate:
-	push eax
-	push ebx
 	shl ebx, 6 
 	add ebx, idt_entries
 	mov [ebx], ax
@@ -18,14 +16,9 @@ idt_set_gate:
 	inc ebx
 	shr eax, 16
 	mov [ebx], ax
-	pop ebx
-	pop eax
 	ret
 
 isr_init:
-	push eax
-	push ebx
-
 	mov eax, isr0
 	mov ebx, 0
 	call idt_set_gate
@@ -155,8 +148,6 @@ isr_init:
 	call idt_set_gate
 
 	lidt [idt_ptr]
-	pop ebx
-	pop eax
 	ret
 
 ; Taken from:
@@ -394,4 +385,4 @@ isr_common_stub:
 	sti
 	iret
 
-INTER: db "Received interrupt: ", 0
+INTER: db "Received interrupt: ", 10, 0

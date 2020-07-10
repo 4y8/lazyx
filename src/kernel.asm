@@ -4,7 +4,7 @@ main:
 	mov ebx, 0x1F
 	mov eax, KERNEL_LOAD
 	call print_string
-	call print_string
+
 	; Hides the cursor
 	mov dx, 0x3D4
 	mov al, 0xA
@@ -12,11 +12,9 @@ main:
 	inc dx
 	mov al, 0x20
 	out dx, al
-	call load_file
-	mov ebx, 0x1F
-	;call print_string
+	
 	call isr_init
-	int 3
+	int 2 
 	jmp $
 
 %include "lib/text/text.asm"
