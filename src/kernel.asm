@@ -11,30 +11,6 @@ main:
 	inc dx
 	mov al, 0x20
 	out dx, al
-	push A 
-	push 0
-	push 0
-	push 0
-	push 1024 
-	push 0
-	push 0
-	push 0
-	push 0
-	push 0
-	push 0
-	push KERNEL_LOAD
-	;call create_file
-	pop eax
-	pop eax
-	pop eax
-	pop eax
-	pop eax
-	pop eax
-	pop eax
-	pop eax
-	pop eax
-	pop eax
-	pop eax
 	mov eax, FS_END
 	mov ebx, file_system
 	call load_file
@@ -46,8 +22,6 @@ main:
 %include "driver/screen.asm"
 %include "driver/filesystem.asm"
 %include "lib/utils/mem.asm"
-KERNEL_LOAD: db "Kernel loaded!", 10, "Kernel loaded!",0
-A: times 1023 db 'a'
-db 0
+KERNEL_LOAD: db "Kernel loaded!", 10, 0
 FS_END equ file_system + 8192
 file_system:

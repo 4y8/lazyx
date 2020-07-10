@@ -1,24 +1,36 @@
 cursor_x: db 0
 cursor_y: db 0
 
+; Create a newline and manage auto-scrolling
 new_line:
-	push ecx
-	push ebx
 	push eax
 	inc BYTE [cursor_y]
 	mov BYTE [cursor_x], 0
 	mov al, [cursor_y]
 	cmp al, 25 
 	jne .end
+	push ecx
+	push ebx
 	mov eax, 0xB8000
 	mov ebx, 0xB8000 + 160
 	mov ecx, 4000
 	call memcpy
 	dec BYTE [cursor_y]
-	.end:
-	pop eax
 	pop ebx
 	pop ecx
+	.end:
+	pop eax
+	ret
+
+add_char:
+	push eax
+	inc BYTE [cursor_x]
+	mov al, [cursor_x]
+	cmp al, 80
+	jne .end
+	call new_line
+	.end:
+	pop eax
 	ret
 
 load_cursor_pos:
