@@ -443,3 +443,93 @@ irq0:
 	push BYTE 0
 	push BYTE 32
 	jmp irq_common_stub
+
+irq1:
+	cli
+	push BYTE 1
+	push BYTE 33
+	jmp irq_common_stub
+
+irq2:
+	cli
+	push BYTE 2 
+	push BYTE 34
+	jmp irq_common_stub
+
+irq3:
+	cli
+	push BYTE 3
+	push BYTE 35
+	jmp irq_common_stub
+
+irq4:
+	cli
+	push BYTE 4
+	push BYTE 36
+	jmp irq_common_stub
+
+irq5:
+	cli
+	push BYTE 5
+	push BYTE 37
+	jmp irq_common_stub
+
+irq6:
+	cli
+	push BYTE 6
+	push BYTE 38
+	jmp irq_common_stub
+
+irq7:
+	cli
+	push BYTE 7
+	push BYTE 39
+	jmp irq_common_stub
+
+irq8:
+	cli
+	push BYTE 8
+	push BYTE 40
+	jmp irq_common_stub
+
+irq9:
+	cli
+	push BYTE 9
+	push BYTE 41
+	jmp irq_common_stub
+
+irq10:
+	cli
+	push BYTE 10
+	push BYTE 42
+	jmp irq_common_stub
+
+irq11:
+	cli
+	push BYTE 11
+	push BYTE 43
+	jmp irq_common_stub
+
+irq12:
+	cli
+	push BYTE 12
+	push BYTE 44
+	jmp irq_common_stub
+
+irq13:
+	cli
+	push BYTE 13
+	push BYTE 45
+	jmp irq_common_stub
+
+irq14:
+	cli
+	push BYTE 14
+	push BYTE 46
+	jmp irq_common_stub
+
+irq15:
+	cli
+	push BYTE 15
+	push BYTE 47
+	jmp irq_common_stub
