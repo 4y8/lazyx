@@ -21,6 +21,7 @@ idt_set_gate:
 	ret
 
 isr_init:
+	; Load ISRs 
 	mov eax, isr0
 	mov ebx, 0
 	call idt_set_gate
@@ -148,6 +149,44 @@ isr_init:
 	mov eax, isr31
 	mov ebx, 31 
 	call idt_set_gate
+
+	; Remap the PIC
+	mov dx, 0x20
+	mov al, 0x11
+	out dx, al
+
+	mov dx, 0xA0
+	out dx, al
+	
+	mov dx, 0x21
+	mov al, 0x20
+	out dx, al
+
+	mov dx, 0xA1
+	mov al, 0x28
+	out dx, al
+	
+	mov dx, 0x21
+	mov al, 0x04
+	out dx, al
+
+	mov dx, 0xA1	
+	mov al, 0x02
+	out dx, al
+
+	dec al
+	mov dx, 0x21
+	out dx, al
+
+	mov dx, 0xA1
+	out dx, al
+	
+	dec al
+	mov dx, 0x21
+	out dx, al
+
+	mov dx, 0xA1
+	out dx, al
 
 	lidt [idt_ptr]
 	ret
