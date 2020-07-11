@@ -1,10 +1,6 @@
 [org 0x1000]
 [bits 32]
 main:
-	mov ebx, 0x1F
-	mov eax, KERNEL_LOAD
-	call print_string
-
 	; Hides the cursor
 	mov dx, 0x3D4
 	mov al, 0xA
@@ -13,8 +9,9 @@ main:
 	mov al, 0x20
 	out dx, al
 	
+	; Setup interrupts
 	call isr_init
-	int 2 
+	sti
 	jmp $
 
 %include "lib/text/text.asm"
@@ -22,6 +19,5 @@ main:
 %include "driver/filesystem.asm"
 %include "lib/utils/mem.asm"
 %include "cpu/idt.asm"
-KERNEL_LOAD: db "Kernel loaded!", 10, 0
 FS_END equ file_system + 8192
 file_system:
