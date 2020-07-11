@@ -188,6 +188,70 @@ isr_init:
 	mov dx, 0xA1
 	out dx, al
 
+	mov eax, irq0
+	mov ebx, 32 
+	call idt_set_gate
+
+	mov eax, irq1
+	mov ebx, 33
+	call idt_set_gate
+
+	mov eax, irq2 
+	mov ebx, 34
+	call idt_set_gate
+
+	mov eax, irq3 
+	mov ebx, 35
+	call idt_set_gate
+
+	mov eax, irq4
+	mov ebx, 36
+	call idt_set_gate
+
+	mov eax, irq5
+	mov ebx, 37
+	call idt_set_gate
+
+	mov eax, irq6
+	mov ebx, 38
+	call idt_set_gate
+
+	mov eax, irq7
+	mov ebx, 39
+	call idt_set_gate
+
+	mov eax, irq8
+	mov ebx, 40 
+	call idt_set_gate
+
+	mov eax, irq9 
+	mov ebx, 41
+	call idt_set_gate
+
+	mov eax, irq10 
+	mov ebx, 42
+	call idt_set_gate
+
+	mov eax, irq11
+	mov ebx, 43
+	call idt_set_gate
+
+	mov eax, irq12
+	mov ebx, 44
+	call idt_set_gate
+
+	mov eax, irq13
+	mov ebx, 45
+	call idt_set_gate
+
+	mov eax, irq14
+	mov ebx, 46
+	call idt_set_gate
+
+	mov eax, irq15
+	mov ebx, 47
+	call idt_set_gate
+
 	lidt [idt_ptr]
 	ret
 
@@ -412,32 +476,6 @@ isr31:
 	push BYTE 31
 	jmp isr_common_stub
 
-isr_common_stub:
-	pusha ; Pushes edi, esi, ebp, esp, ebx, edx, ecx, eax.
-	mov ax, ds ; Lower 16-bits of eax = ds.
-	push eax ; Save the data segment descriptor.
-	mov ax, 0x10 ; Load the kernel data segment descriptor.
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-	mov eax, INTER
-	mov ebx, 0x1F
-	call print_string
-	mov eax, [esp + 28]
-	call kprint_int
-	pop eax ; Reload the original data segment descriptor.
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
-	popa ; Pops edi, esi, ebp, ...
-	add esp, 8 ; Cleans up the pushed error code and pushed ISR number.
-   	sti
-	iret
-
-INTER: db "Received interrupt: ", 0
-
 irq0:
 	cli
 	push BYTE 0
@@ -533,3 +571,41 @@ irq15:
 	push BYTE 15
 	push BYTE 47
 	jmp irq_common_stub
+
+isr_common_stub:
+	pusha ; Pushes edi, esi, ebp, esp, ebx, edx, ecx, eax.
+	mov eax, INTER
+	mov ebx, 0x1F
+	call print_string
+	mov eax, [esp + 24]
+	call kprint_int
+	popa ; Pops edi, esi, ebp, ...
+	add esp, 8 ; Cleans up the pushed error code and pushed ISR number.
+   	sti
+	iret
+
+
+irq_common_stub:
+	pusha ; Pushes edi, esi, ebp, esp, ebx, edx, ecx, eax.
+	mov eax, [esp + 24]
+	cmp eax, 40
+	jl .condition
+	mov dx, 0xA0
+	mov al, 0x20
+	out dx, al
+	.condition:
+	mov dx, 0x20
+	mov al, 0x20
+	out dx, al
+	mov eax, INTER
+	mov ebx, 0x1F
+	call print_string
+	mov eax, [esp + 24]
+	call kprint_int
+	popa ; Pops edi, esi, ebp, ...
+	add esp, 8 ; Cleans up the pushed error code and pushed ISR number.
+   	sti
+	iret
+
+INTER: db "Received interrupt: ", 0
+
