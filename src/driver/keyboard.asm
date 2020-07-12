@@ -226,7 +226,7 @@ keyboard_callback:
 	mov dx, 0x60
 	in al, dx
 	mov ebx, 0x1F
-	call kprint_int
 	mov eax, [scancode_to_ascii + eax]
 	mov ebx, 0x1F
 	call print_char
+	ret

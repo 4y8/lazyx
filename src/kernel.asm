@@ -13,7 +13,6 @@ main:
 	call isr_init
 	sti
 
-	mov eax, 50
 	call init_keyboard
 	jmp $
 
