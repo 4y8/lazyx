@@ -14,7 +14,7 @@ main:
 	sti
 
 	mov eax, 50
-	call init_timer
+	call init_keyboard
 	jmp $
 
 %include "lib/text/text.asm"
@@ -23,5 +23,6 @@ main:
 %include "lib/utils/mem.asm"
 %include "cpu/idt.asm"
 %include "cpu/timer.asm"
+%include "driver/keyboard.asm"
 FS_END equ file_system + 8192
 file_system:
