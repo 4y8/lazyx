@@ -601,12 +601,12 @@ irq_common_stub:
 	mov dx, 0x20
 	mov al, 0x20
 	out dx, al
-	mov eax, [esp + 32]
-	shl eax, 2
+	mov eax, [esp + 36]
+	mov eax, [irq_handlers + 4 * eax]
 	cmp eax, 0
 	je .no_handler
-	call [eax]
-	.no_handler
+	call eax
+	.no_handler:
 	popa ; Pops edi, esi, ebp, ...
 	add esp, 8 ; Cleans up the pushed error code and pushed ISR number.
    	sti
