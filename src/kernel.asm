@@ -12,6 +12,9 @@ main:
 	; Setup interrupts
 	call isr_init
 	sti
+
+	mov eax, 50
+	call init_timer
 	jmp $
 
 %include "lib/text/text.asm"
@@ -19,5 +22,6 @@ main:
 %include "driver/filesystem.asm"
 %include "lib/utils/mem.asm"
 %include "cpu/idt.asm"
+%include "cpu/timer.asm"
 FS_END equ file_system + 8192
 file_system:
