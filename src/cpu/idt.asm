@@ -5,6 +5,9 @@ idt_ptr:
 	dw 2047
 	dd idt_entries
 
+irq_handlers:
+	times 64 db 0
+
 idt_set_gate:
 	shl ebx, 3 
 	add ebx, idt_entries
@@ -577,17 +580,18 @@ isr_common_stub:
 	mov eax, INTER
 	mov ebx, 0x1F
 	call print_string
-	mov eax, [esp + 24]
+	mov eax, [esp + 32]
 	call kprint_int
+	mov eax, 10
+	call print_char
 	popa ; Pops edi, esi, ebp, ...
 	add esp, 8 ; Cleans up the pushed error code and pushed ISR number.
    	sti
 	iret
 
-
 irq_common_stub:
 	pusha ; Pushes edi, esi, ebp, esp, ebx, edx, ecx, eax.
-	mov eax, [esp + 24]
+	mov eax, [esp + 32]
 	cmp eax, 40
 	jl .condition
 	mov dx, 0xA0
@@ -597,15 +601,22 @@ irq_common_stub:
 	mov dx, 0x20
 	mov al, 0x20
 	out dx, al
-	mov eax, INTER
-	mov ebx, 0x1F
-	call print_string
-	mov eax, [esp + 24]
-	call kprint_int
+	mov eax, [esp + 32]
+	shl eax, 2
+	cmp eax, 0
+	je .no_handler
+	call [eax]
+	.no_handler
 	popa ; Pops edi, esi, ebp, ...
 	add esp, 8 ; Cleans up the pushed error code and pushed ISR number.
    	sti
 	iret
+
+set_irq_handler:
+	shl eax, 2
+	add eax, irq_handlers
+	mov [eax], ebx
+	ret
 
 INTER: db "Received interrupt: ", 0
 
