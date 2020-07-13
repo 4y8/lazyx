@@ -226,20 +226,34 @@ keyboard_callback:
 	mov eax, 0
 	mov dx, 0x60
 	in al, dx
-	mov ebx, 0x1F
 	mov al, [scancode_to_ascii + eax]
-	mov [key_pressed], al
+	mov ebx, [keyboard_buffer_i]
+	add ebx, keyboard_buffer
+	inc BYTE [keyboard_buffer_i]
+	mov [ebx], al
 	ret
+
+keyboard_buffer: times 512 db 0
+keyboard_buffer_i: dd 0
 
 ; Wait for a keypress and put the ascii code of the pressed key in eax
 read_char:
-	mov eax, 0
+	push ecx
+	xor eax, eax
 	.start:
-	mov al, [key_pressed]
+	mov al, [keyboard_buffer_i]
 	cmp al, 0
-	jne .end
-	jmp .start
+	je .start
 	.end:
+	mov eax, [keyboard_buffer_i]
+	add eax, keyboard_buffer - 1
+	mov cl, [eax]
+	cmp cl, 0
+	je .start
+	xor eax, eax
+	mov al, cl
+	dec BYTE [keyboard_buffer_i]
+	pop ecx
 	ret
 
 read_line:
@@ -247,7 +261,7 @@ read_line:
 	push ecx
 	mov ecx, 0
 	mov eax, 256
-	mov eax, .buffer; call malloc
+	call malloc
 	mov ebx, eax
 	.loop:
 	call read_char
@@ -257,7 +271,7 @@ read_line:
 	inc ecx
 	jmp .loop
 	.end:
-	mov BYTE [ebx + ecx + 1], 0
+	mov BYTE [ebx + ecx], 0
 	mov eax, ebx
 	pop ecx
 	pop ebx

@@ -13,6 +13,7 @@ main:
 	call isr_init
 	sti
 
+	
 	call init_keyboard
 	call read_line
 	mov ebx, 0x1F
