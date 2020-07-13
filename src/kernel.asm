@@ -14,6 +14,9 @@ main:
 	sti
 
 	call init_keyboard
+	call read_line
+	mov ebx, 0x1F
+	call print_string
 	jmp $
 
 %include "lib/text/text.asm"

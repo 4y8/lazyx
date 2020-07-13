@@ -29,7 +29,8 @@ strcpy:
 	popa
 	ret
 
-; Allocate eax bytes of memory 
+; Allocate eax bytes of memory, and return the address of the allocated memory
+; in eax
 malloc:
 	push ebx
 	mov ebx, [.p]

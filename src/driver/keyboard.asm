@@ -220,13 +220,48 @@ init_keyboard:
 	mov eax, 1
 	mov ebx, keyboard_callback
 	call set_irq_handler
+	ret
 
 keyboard_callback:
 	mov eax, 0
 	mov dx, 0x60
 	in al, dx
 	mov ebx, 0x1F
-	mov eax, [scancode_to_ascii + eax]
-	mov ebx, 0x1F
-	call print_char
+	mov al, [scancode_to_ascii + eax]
+	mov [key_pressed], al
 	ret
+
+; Wait for a keypress and put the ascii code of the pressed key in eax
+read_char:
+	mov eax, 0
+	.start:
+	mov al, [key_pressed]
+	cmp al, 0
+	jne .end
+	jmp .start
+	.end:
+	ret
+
+read_line:
+	push ebx
+	push ecx
+	mov ecx, 0
+	mov eax, 256
+	mov eax, .buffer; call malloc
+	mov ebx, eax
+	.loop:
+	call read_char
+	cmp al, 13
+	je .end
+	mov [ebx + ecx], al
+	inc ecx
+	jmp .loop
+	.end:
+	mov BYTE [ebx + ecx + 1], 0
+	mov eax, ebx
+	pop ecx
+	pop ebx
+	ret
+	.buffer: times 256 db 0
+
+key_pressed: db 0
