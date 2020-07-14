@@ -27,7 +27,7 @@ scancode_to_ascii:
 	db 'p'
 	db '['
 	db ']'
-	db 13
+	db 10
 	db 0
 	db 'a'
 	db 's'
@@ -99,7 +99,7 @@ scancode_to_ascii:
 	db 0
 	db 0
 	db 0
-	db 13
+	db 10 
 	db 0
 	db 0
 	db 0
@@ -252,6 +252,10 @@ read_char:
 	je .start
 	xor eax, eax
 	mov al, cl
+	push ebx
+	mov ebx, 0x1F
+	call print_char
+	pop ebx
 	dec BYTE [keyboard_buffer_i]
 	pop ecx
 	ret
@@ -265,7 +269,7 @@ read_line:
 	mov ebx, eax
 	.loop:
 	call read_char
-	cmp al, 13
+	cmp al, 10 
 	je .end
 	mov [ebx + ecx], al
 	inc ecx

@@ -34,6 +34,16 @@ syscall:
 	call read_line
 	iret
 	.l1:
+	cmp edx, 2
+	jne .l2
+	call malloc
+	iret
+	.l2:
+	cmp edx, 3
+	jne .l3
+	call free
+	iret
+	.l3:
 	iret
 
 isr_init:
