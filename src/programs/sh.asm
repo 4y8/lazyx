@@ -3,3 +3,5 @@ sh:
 	pusha
 	popa
 	ret
+
+PROMPT: db '> ', 0

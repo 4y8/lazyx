@@ -13,7 +13,11 @@ main:
 	call isr_init
 	sti
 
-	
+	mov edx, 0
+	mov eax, HELLO
+	mov ebx, 0x1F
+	int 0x80
+
 	call init_keyboard
 	call read_line
 	mov ebx, 0x1F
@@ -29,3 +33,4 @@ main:
 %include "driver/keyboard.asm"
 FS_END equ file_system + 8192
 file_system:
+HELLO: db "Hello World!", 10, 0

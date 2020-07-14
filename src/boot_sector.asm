@@ -2,17 +2,13 @@
 [bits 16]
 	mov bp, 0x9000
 	mov sp, bp
-	; mov ax, 0x13 Set the Video mode to 13h, VGA 320x200 256 colours
 	mov ax, 0x3 ; Set the Video mode to 3h, Text 80x25 16 colours
-	mov ah, 0
 	int 0x10
 
 kernel_disk_load:
-	mov [BOOT_DRIVE], dl ; Save the boot drive 
-	mov dl, [BOOT_DRIVE]
-	mov bx, 0x1000 ; [main]
+	mov bx, 0x1000 
 	mov ah, 0x02
-	mov al, 0x80 
+	mov al, 15 
 	mov ch, 0x00
 	mov dh, 0x00
 	mov cl, 0x02
@@ -75,12 +71,12 @@ init_pm:
 	call BEGIN_PM
 
 BEGIN_PM:
-	call 0x1000; [main]
+	call 0x1000
 	jmp $
 
-BOOT_DRIVE db 0
 times 510-($-$$) db 0
 dw 0xaa55
 
-CODE_SEG     equ gdt_code - gdt_start
-DATA_SEG     equ gdt_data - gdt_start
+CODE_SEG equ gdt_code - gdt_start
+DATA_SEG equ gdt_data - gdt_start
+

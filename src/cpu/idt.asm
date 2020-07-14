@@ -23,6 +23,19 @@ idt_set_gate:
 	mov [ebx], ax
 	ret
 
+syscall:
+	cmp edx, 0
+	jne .l0
+	call print_string
+	iret
+	.l0:
+	cmp edx, 1
+	jne .l1
+	call read_line
+	iret
+	.l1:
+	iret
+
 isr_init:
 	; Load ISRs 
 	mov eax, isr0
@@ -254,6 +267,11 @@ isr_init:
 	mov eax, irq15
 	mov ebx, 47
 	call idt_set_gate
+	
+	mov eax, syscall
+	mov ebx, 0x80
+	call idt_set_gate
+
 
 	lidt [idt_ptr]
 	ret

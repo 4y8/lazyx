@@ -1,0 +1,12 @@
+A system a call is called by putting its id in edx, and its argument in the 
+expected place. Here The list of syscalls.
+
+id | name  |          input      |          output          |   description             
+---+-------+---------------------+--------------------------+-------------------
+ 0 | print | eax: address to the | none                     | Prints a string to
+   |       | string              |                          | standard output
+   |       | ebx: colour of the  |                          |
+   |       | string              |                          |
+---+-------+---------------------+--------------------------+-------------------
+ 1 | read  | none                | eax: pointer to the ent- | Reads a line from 
+   |       |                     | ered string              | standard input
