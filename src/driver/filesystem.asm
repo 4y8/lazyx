@@ -164,15 +164,31 @@ load_file_with_path:
 	push edi
 	push edx
 	push ecx
+
+	mov esi, 0
+	mov edi, eax
+	
+	.get_name_loop:
+	mov cl, [edi]
+	cmp cl, '/'
+	cmove esi, edi
+	cmp cl, 0
+	je .after_loop_name
+	inc edi
+	jmp .get_name_loop
+	.after_loop_name:
+
 	push eax
 	mov eax, 108
 	call malloc
 	mov ecx, eax
-	pop eax
+	mov eax, 166
+	call malloc
 	mov edx, eax
-	mov edi, 
+	pop eax
 
 	mov eax, file_system
+
 	.loop:
 	add eax, 512
 	jmp .loop
