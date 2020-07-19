@@ -101,7 +101,7 @@ print_char:
 	.end:
 	mov bl, al
 	mov [edi], bx
-	inc BYTE [cursor_x]
+	call add_char
 	popa
 	ret
 

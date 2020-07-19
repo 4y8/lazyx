@@ -1,0 +1,15 @@
+Layout of descriptor block (all measures are in bytes):
+
+offset | size |                       description
+-------+------+----------------------------------------------------------------
+   0   |  1   | Always set to -1
+   1   |  108 | File's name without the path (NUL-terminated string)
+   109 |  8   | User's ID (in little endian)
+   117 |  8   | Group's ID (in little endian)
+   125 |  12  | File's size (in little endian)
+   262 |  32  | User's name (NUL-terminated string)
+   294 |  48  | Group's name (NUL-terminated string)
+   342 |  166 | File's absolute path without the file's name (NUL-terminated 
+       |      | string)
+   508 |  4   | Relative address to the first data block of the file (See data
+       |      | blocks)
