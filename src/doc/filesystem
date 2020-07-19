@@ -13,3 +13,10 @@ offset | size |                       description
        |      | string)
    508 |  4   | Relative address to the first data block of the file (See data
        |      | blocks)
+
+Data blocks:
+All data blocks start with a 4 bytes header containing the relative address of
+the next data block. The last data block's address is set to 0. The unused 
+bytes of the last data blocks are left uninitialized. All the addresses are
+relative to the filesystem root (the file system root has address 0 even 
+though it is not true in RAM).

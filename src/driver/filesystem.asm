@@ -159,6 +159,9 @@ load_file:
 	popa
 	ret
 
+load_file_with_path:
+	ret
+
 ; Delete the file with its descriptor at the address eax.
 delete_file:
 	pusha

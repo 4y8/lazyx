@@ -43,3 +43,29 @@ malloc:
 
 free:
 	ret
+
+; Compares the string at address eax and ebx and return 0 in eax if they are 
+; equal
+strcmp:
+	push ebx
+	push ecx
+	.loop:
+	mov cl, [eax]
+	mov ch, [ebx]
+	cmp cl, ch
+	jne .end
+	cmp cl, 0
+	jne .continue
+	pop ecx
+	pop ebx
+	mov eax, 0
+	ret
+	.continue:
+	inc eax
+	inc ebx
+	jmp .loop
+	.end
+	mov eax, 1
+	pop ecx
+	pop ebx
+	ret
