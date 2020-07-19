@@ -187,6 +187,12 @@ load_file_with_path:
 	mov edx, eax
 	pop eax
 
+	push eax
+	push ebx
+	push ecx
+
+	mov ecx, eax
+
 	mov eax, file_system
 
 	.loop:
