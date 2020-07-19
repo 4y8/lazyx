@@ -18,11 +18,11 @@ main:
 	mov ebx, file_system
 	mov eax, FS_END
 	call load_file
-	mov ecx, file_system 
-	;call file_system
+	mov ecx, FS_END 
+	call FS_END
+	mov edx, 0 
 	mov eax, HELLO
 	mov ebx, 0x1F
-	mov edx, 0
 	int 0x80
 	jmp $
 

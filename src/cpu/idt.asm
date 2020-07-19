@@ -24,6 +24,7 @@ idt_set_gate:
 	ret
 
 syscall:
+	sti
 	cmp edx, 0
 	jne .l0
 	call print_string
