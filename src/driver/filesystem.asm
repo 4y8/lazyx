@@ -160,6 +160,26 @@ load_file:
 	ret
 
 load_file_with_path:
+	push esi
+	push edi
+	push edx
+	push ecx
+	push eax
+	mov eax, 108
+	call malloc
+	mov ecx, eax
+	pop eax
+	mov edx, eax
+	mov edi, 
+
+	mov eax, file_system
+	.loop:
+	add eax, 512
+	jmp .loop
+	pop ecx
+	pop edx
+	pop edi
+	pop esi
 	ret
 
 ; Delete the file with its descriptor at the address eax.
@@ -171,8 +191,9 @@ delete_file:
 	.loop:
 	cmp eax, 0 
 	je .end
+	mov ecx, [eax]
 	mov DWORD [eax], 0
-	mov eax, [eax]
+	mov eax, [ecx]
 	jmp .loop
 	.end:
 	popa

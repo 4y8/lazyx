@@ -69,3 +69,20 @@ strcmp:
 	pop ecx
 	pop ebx
 	ret
+
+; Returns the length of the string stored at the address eax
+strlen:
+	push ecx
+	push ebx
+	.loop:
+	mov cl, [eax]
+	cmp cl, 0
+	je .end
+	inc ebx
+	inc eax
+	jmp .loop
+	.end:
+	mov eax, ebx
+	pop ebx
+	pop ecx
+	ret
