@@ -14,12 +14,16 @@ main:
 	sti
 
 	call init_keyboard
-	call read_line
+	;call read_line
 	mov ebx, file_system
 	mov eax, FS_END
 	call load_file
+	mov ecx, file_system 
+	;call file_system
+	mov eax, HELLO
 	mov ebx, 0x1F
-	call print_string
+	mov edx, 0
+	int 0x80
 	jmp $
 
 %include "lib/text/text.asm"
@@ -27,7 +31,8 @@ main:
 %include "driver/filesystem.asm"
 %include "lib/utils/mem.asm"
 %include "cpu/idt.asm"
-%include "cpu/timer.asm"
 %include "driver/keyboard.asm"
-FS_END equ file_system + 8192
+FS_END equ file_system + 1024 
+HELLO: db 'Hello', 0
 file_system:
+
