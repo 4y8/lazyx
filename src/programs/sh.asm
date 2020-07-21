@@ -8,13 +8,9 @@ sh:
 	.start:
 	mov eax, PROMPT
 	add eax, ecx
-	mov ebx, 0x1F
-	mov edx, 0 
-	int 0x80
-	mov edx, 1
-	int 0x80
-	mov edx, 0
-	int 0x80
+	call printf
+	call gets
+	call printf
 	jmp .start
 	.end:
 	popa
@@ -22,3 +18,5 @@ sh:
 	.buffer: dd 0
 
 PROMPT: db 10, '> ', 0
+%include "lib/utils/stdio.asm"
+%include "lib/utils/mem.asm"

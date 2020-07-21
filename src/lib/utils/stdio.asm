@@ -44,9 +44,10 @@ putchar:
 	mov ebx, eax
 	pop eax
 	mov [ebx], al
-	xor BYTE [ebx + 1], BYTE [ebx + 1]
+	mov BYTE [ebx + 1], 0
 	mov eax, ebx
 	xor edx, edx
+	mov ebx, 0x1F
 	int 0x80
 	add edx, 3
 	int 0x80
@@ -84,7 +85,7 @@ print_int:
 	.kprint_buffer: times 128 db 0 
 
 ; Printf the string at address eax with the arguments pushed right-first on the
-; stack. The colour of the string is in ebx.
+; stack.
 printf:
 	push eax
 	push ecx
@@ -112,7 +113,7 @@ printf:
 	call puts 
 	jmp .end_spe
 	.aft2:
-	call put_char
+	call putchar
 	.end_spe:
 	pop eax
 	inc eax
@@ -131,8 +132,10 @@ printf:
 	mov dl, [eax]
 	cmp dl, 'n'
 	jne .non_nl
-	mov byte [cursor_x], 0
-	inc BYTE [cursor_y]
+	push eax
+	mov eax, 10
+	call putchar
+	pop eax
 	jmp .end_esc 
 	.non_nl:
 	.end_esc:

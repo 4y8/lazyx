@@ -36,7 +36,7 @@ malloc:
 	mov ebx, [.p]
 	add [.p], eax
 	mov eax, ebx
-	add ebx, FS_END
+	add ebx, 0x2000 
 	pop ebx
 	ret
 	.p : dd 0
