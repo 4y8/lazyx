@@ -32,16 +32,17 @@ strcpy:
 ; Allocate eax bytes of memory, and return the address of the allocated memory
 ; in eax
 malloc:
-	push ebx
-	mov ebx, [.p]
-	add [.p], eax
-	mov eax, ebx
-	add ebx, 0x2000 
-	pop ebx
+	push edx
+	mov edx, 2
+	int 0x80
+	pop edx
 	ret
-	.p : dd 0
 
 free:
+	push edx
+	mov edx, 3
+	int 0x80
+	pop edx
 	ret
 
 ; Compares the string at address eax and ebx and return 0 in eax if they are 
