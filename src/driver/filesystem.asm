@@ -164,6 +164,7 @@ load_file_with_path:
 	push edi
 	push edx
 	push ecx
+	push ebx
 
 	mov esi, 0
 	mov edi, eax
@@ -179,25 +180,65 @@ load_file_with_path:
 	.after_loop_name:
 
 	push eax
-	mov eax, 108
+	mov eax, 166
 	call malloc
 	mov ecx, eax
-	mov eax, 166
+	mov eax, 108
 	call malloc
 	mov edx, eax
 	pop eax
 
-	push eax
 	push ebx
 	push ecx
+	push eax
+	push esi
+	
+	sub esi, eax
+	mov ebx, eax
+	mov eax, ecx
+	mov ecx, esi
+	call memcpy
+	
+	pop esi
+
+	mov eax, edx
+	mov ebx, esi
+	call strcpy 
+
+	pop eax
+	pop ecx
+	pop ebx
 
 	mov ecx, eax
 
-	mov eax, file_system
+	mov esi, file_system
 
 	.loop:
-	add eax, 512
+	mov bl, [esi]
+	cmp bl, -1
+	jne .continue
+	
+	mov eax, esi
+	inc eax
+	
+	mov ebx, edx
+	
+	call strcmp
+	cmp eax, 0
+	jne .continue
+
+	add eax, 341
+	mov ebx, ecx
+	call strcmp
+	cmp eax, 0
+	je .end
+
+	.continue:
+	add esi, 512
 	jmp .loop
+
+	.end:
+	pop ebx
 	pop ecx
 	pop edx
 	pop edi
