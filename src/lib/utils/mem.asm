@@ -64,7 +64,7 @@ strcmp:
 	inc eax
 	inc ebx
 	jmp .loop
-	.end
+	.end:
 	mov eax, 1
 	pop ecx
 	pop ebx
