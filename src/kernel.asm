@@ -16,10 +16,12 @@ main:
 	call init_keyboard
 	;call read_line
 	mov ebx, file_system
+	mov eax, 1024
+	call malloc
 	mov eax, FS_END
 	call load_file
-	mov ecx, FS_END 
-	call FS_END
+	mov ecx, eax 
+	call eax 
 	mov edx, 0 
 	mov eax, HELLO
 	mov ebx, 0x1F
@@ -29,6 +31,7 @@ main:
 %include "lib/text/text.asm"
 %include "driver/screen.asm"
 %include "driver/filesystem.asm"
+%include "driver/mem.asm"
 %include "lib/utils/mem.asm"
 %include "cpu/idt.asm"
 %include "driver/keyboard.asm"

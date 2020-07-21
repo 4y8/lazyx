@@ -124,21 +124,30 @@ create_file:
 	pop eax
 	ret
 
+get_file_size:
+	push ecx
+	push edx
+	add eax, 125
+	mov ecx, 3
+	.get_size:
+	shl edx, 32 
+	add edx, [eax]
+	add eax, 4
+	loop .get_size
+	mov eax, ebx
+	pop edx
+	pop ecx
+	ret
+
 ; Load the file with its descriptor at the address ebx, at the address eax. 
 load_file:
 	pusha
-	add ebx, 125
-	mov cl, 0
-	.get_size:
-	cmp cl, 3 
-	je .end_size
-	shl edx, 32 
-	add edx, [ebx]
-	add ebx, 4
-	inc cl
-	jmp .get_size
-	.end_size:
-	add ebx, 371
+	push eax
+	mov eax, ebx
+	call get_file_size
+	mov edx, eax
+	pop eax
+	add ebx, 508 
 	mov ecx, 508
 	mov ebx, [ebx]
 	.loop:
@@ -238,6 +247,12 @@ load_file_with_path:
 	jmp .loop
 
 	.end:
+
+	mov ebx, eax
+	call get_file_size
+	call malloc
+	call load_file
+
 	pop ebx
 	pop ecx
 	pop edx

@@ -37,14 +37,19 @@ syscall:
 	.l1:
 	cmp edx, 2
 	jne .l2
-	call malloc
+	call alloc_bytes
 	iret
 	.l2:
 	cmp edx, 3
 	jne .l3
-	call free
+	call free_bytes
 	iret
 	.l3:
+	cmp edx, 4
+	jne .l4
+	call load_file_with_path
+	iret
+	.l4:
 	iret
 
 isr_init:
