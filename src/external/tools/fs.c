@@ -23,7 +23,8 @@ create_file(file f)
         if (!c) {
                 puts("Error: Unable to allocate memory.");
                 exit(1);
-        } strncpy(c + 1, f.name, 100);
+        } *c = -1; 
+	strncpy(c + 1, f.name, 100);
         long_to_chars(f.uid, c + 109, 8);
         long_to_chars(f.gid, c + 117, 8);
         long_to_chars(f.size >> 32, c + 129, 4);

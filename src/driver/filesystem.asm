@@ -32,7 +32,7 @@ create_file:
 	mov edi, file_system
 	call find_free_block
 	add edi, file_system
-	mov BYTE [edi], -1
+	mov BYTE [edi], 255 
 	inc edi
 	; Copy the file's name
 	mov eax, edi
@@ -200,6 +200,7 @@ load_file_with_path:
 	push ebx
 	push ecx
 	push eax
+	inc esi
 	push esi
 	
 	sub esi, eax
@@ -207,8 +208,10 @@ load_file_with_path:
 	mov eax, ecx
 	mov ecx, esi
 	call memcpy
+	mov BYTE [eax + esi], BYTE 0
 	
 	pop esi
+
 
 	mov eax, edx
 	mov ebx, esi
@@ -218,22 +221,34 @@ load_file_with_path:
 	pop ecx
 	pop ebx
 
-	mov ecx, eax
-
 	mov esi, file_system
 
 	.loop:
+
 	mov bl, [esi]
-	cmp bl, -1
+	cmp bl, -1 
 	jne .continue
-	
+
 	mov eax, esi
 	inc eax
 	
+
+	call puts
+
 	mov ebx, edx
 	
 	call strcmp
 	cmp eax, 0
+	mov ebx, 0x1F
+	call kprint_int
+pop ebx
+	pop ecx
+	pop edx
+	pop edi
+	pop esi
+	ret
+
+
 	jne .continue
 
 	add eax, 341

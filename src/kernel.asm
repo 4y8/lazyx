@@ -13,8 +13,12 @@ main:
 	call isr_init
 	sti
 
+	mov eax, file_system + 1 
+	call puts
 	call init_keyboard
 	;call read_line
+	mov eax, FILE
+	call load_file_with_path
 	mov ebx, file_system
 	mov eax, 1024
 	call malloc
@@ -22,10 +26,6 @@ main:
 	call load_file
 	mov ecx, eax 
 	call eax 
-	mov edx, 0 
-	mov eax, HELLO
-	mov ebx, 0x1F
-	int 0x80
 	jmp $
 
 %include "lib/text/text.asm"
@@ -33,9 +33,11 @@ main:
 %include "driver/filesystem.asm"
 %include "driver/mem.asm"
 %include "lib/utils/mem.asm"
+%include "lib/utils/stdio.asm"
 %include "cpu/idt.asm"
 %include "driver/keyboard.asm"
 FS_END equ file_system + 1024 
 HELLO: db 'Hello', 0
+FILE: db '/sh', 0
 file_system:
 
