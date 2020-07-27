@@ -1,5 +1,6 @@
 ; Prints the screen at the address eax
 puts:
+	push eax
 	push ebx
 	push edx
 	mov ebx, 0x1F
@@ -9,6 +10,7 @@ puts:
 	call putchar
 	pop edx
 	pop ebx
+	pop eax
 	ret
 
 ; Reads a string from user input and return its address in eax

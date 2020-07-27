@@ -24,3 +24,6 @@ ID | name   |        input        |          output          |   description
 ---+--------+---------------------+--------------------------+-----------------
  5 | list   | eax: path to the    | eax: pointer to the list | List the files 
    | files  | directory           | of file names            | in a directory
+---+--------+---------------------+--------------------------+-----------------
+ 6 | exec   | eax: path to the    | eax: exit code of the    | Executes a file 
+   | file   | executable          | executable               | in LEF format

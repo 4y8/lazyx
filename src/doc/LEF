@@ -1,0 +1,11 @@
+LEF (Lazyx's Executable Format), is a position independant executable format in
+the following format:
+A header of 16 bytes:
+ offset | size | description
+--------+------+-------------------------------------
+    0   |  4   | Program's entry point
+    4   |  4   | Size of text segment
+    8   |  4   | Size of initialized data segment
+    12  |  4   | Size of uninitialized data segment
+
+The file itself with the code (text segment) and then the initialized data.
