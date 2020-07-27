@@ -14,6 +14,24 @@ memcpy:
 	popa
 	ret
 
+; Copies a maximum of edx bytes from ebx to eax until the byte in cl is found
+memccpy:
+	pusha
+	.main_loop:
+	cmp edx, 0
+	je .end
+	mov dl, [ebx]
+	cmp dl, cl
+	je .end
+	mov [eax], dl
+	inc eax
+	inc ebx
+	dec edx
+	jmp .main_loop
+	.end:
+	popa
+	ret
+
 ; Copies the string from ebx to eax
 strcpy:
 	pusha

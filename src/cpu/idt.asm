@@ -50,6 +50,10 @@ syscall:
 	call load_file_with_path
 	iret
 	.l4:
+	cmp edx, 6
+	jne .l6
+	call exec_file
+	.l6:
 	iret
 
 isr_init:

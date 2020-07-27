@@ -28,6 +28,6 @@ main:
 %include "driver/keyboard.asm"
 FS_END equ file_system + 1024 
 HELLO: db 'Hello', 0
-FILE: db '/sh', 0
+FILE: db '/bin/sh', 0
 file_system:
 
