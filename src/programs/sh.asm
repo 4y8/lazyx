@@ -33,7 +33,6 @@ sh:
 	mov edx, 6
 	int 0x80
 	pop edx
-	;call printf
 	call newline
 	pop eax
 	jmp .start
