@@ -13,18 +13,14 @@ main:
 	call isr_init
 	sti
 
-	mov eax, file_system + 1 
+	
+	mov eax, file_system + 342 
 	call puts
 	call init_keyboard
 	;call read_line
 	mov eax, FILE
 	call load_file_with_path
-	mov ebx, file_system
-	mov eax, 1024
-	call malloc
-	mov eax, FS_END
-	call load_file
-	mov ecx, eax 
+	mov ecx, eax
 	call eax 
 	jmp $
 

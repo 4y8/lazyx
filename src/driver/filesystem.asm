@@ -212,7 +212,6 @@ load_file_with_path:
 	
 	pop esi
 
-
 	mov eax, edx
 	mov ebx, esi
 	call strcpy 
@@ -225,36 +224,28 @@ load_file_with_path:
 
 	.loop:
 
+	mov eax, esi
+
 	mov bl, [esi]
 	cmp bl, -1 
 	jne .continue
 
 	mov eax, esi
 	inc eax
-	
-
-	call puts
 
 	mov ebx, edx
-	
+
 	call strcmp
 	cmp eax, 0
-	mov ebx, 0x1F
-	call kprint_int
-pop ebx
-	pop ecx
-	pop edx
-	pop edi
-	pop esi
-	ret
-
-
 	jne .continue
 
-	add eax, 341
+	mov eax, esi
+	add eax, 342
 	mov ebx, ecx
 	call strcmp
 	cmp eax, 0
+	jne .continue
+
 	je .end
 
 	.continue:
@@ -263,7 +254,7 @@ pop ebx
 
 	.end:
 
-	mov ebx, eax
+	mov ebx, esi
 	call get_file_size
 	call malloc
 	call load_file
