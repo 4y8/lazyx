@@ -56,16 +56,12 @@ main(int argc, char **argv)
         if (argc < 2) {
                 puts("Error: The program has to be called with an argument.");
                 exit(1);
-        } f.file = fopen(argv[1], "r");
-        f.name = argv[1];
-        f.uid = 0;
-        f.gid = 0;
+        } 
+	f = (file){.file = fopen(argv[1], "r"), .name = argv[1], .uid = 0, 
+		   .gid = 0, .path = argv[2], .gname = "", .uname = "root"};
         fseek(f.file, 0L, SEEK_END);
         f.size = ftell(f.file);
         rewind(f.file);
-        f.path = "/";
-        f.gname = "";
-        f.uname = "root";
         c = create_file(f);
         fclose(f.file);
         out = fopen("root.fs", "w");

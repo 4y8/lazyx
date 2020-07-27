@@ -282,3 +282,15 @@ delete_file:
 	.end:
 	popa
 	ret
+
+exec_file:
+	pusha
+	call load_file_with_path
+	mov ecx, eax
+	;add ecx, 16
+	push ecx
+	mov ebx, [eax]
+	add ebx, eax
+	call ebx
+	popa
+	ret

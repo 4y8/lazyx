@@ -57,6 +57,14 @@ putchar:
 	pop ebx
 	ret
 
+; Prints a new line
+newline:
+	push eax
+	mov eax, 10
+	call putchar
+	pop eax
+	ret
+
 ; Prints the integer eax of colour ebx.
 print_int:
 	pusha

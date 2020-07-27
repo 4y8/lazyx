@@ -1,0 +1,8 @@
+#!/bin/sh -e
+nasm -fbin ./boot_sector.asm -o ./boot_sector.bin
+nasm -fbin ./kernel.asm -o ./kernel.bin
+nasm -fbin ./programs/sh.asm -o ./sh
+gcc ./external/tools/fs.c
+./a.out sh /
+cat ./boot_sector.bin ./kernel.bin ./root.fs > os.bin
+rm ./boot_sector.bin ./kernel.bin

@@ -13,15 +13,9 @@ main:
 	call isr_init
 	sti
 
-	
-	mov eax, file_system + 342 
-	call puts
 	call init_keyboard
-	;call read_line
 	mov eax, FILE
-	call load_file_with_path
-	mov ecx, eax
-	call eax 
+	call exec_file
 	jmp $
 
 %include "lib/text/text.asm"
