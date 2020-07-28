@@ -15,7 +15,6 @@ sh:
 	call gets
 	cmp BYTE [eax], 0
 	je .start
-	push eax
 	mov ebx, eax
 	mov eax, 256
 	call malloc
@@ -30,11 +29,11 @@ sh:
 	call memccpy
 	sub eax, 5 
 	push edx
+	mov eax, SHELL
 	mov edx, 6
 	int 0x80
 	pop edx
 	call newline
-	pop eax
 	jmp .start
 	.end:
 	popa
@@ -43,5 +42,6 @@ sh:
 
 PROMPT: db '> ', 0
 PREFIX: db '/bin/', 0
+SHELL: db '/bin/sh/', 0
 %include "lib/utils/stdio.asm"
 %include "lib/utils/mem.asm"
