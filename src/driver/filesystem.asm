@@ -226,13 +226,15 @@ load_file_with_path:
 	.loop:
 
 	mov eax, esi
-	mov edi, eax
-	shr edi, 9
-	cmp edi, [fs_size]
-	mov edi, 0
-	cmove eax, edi
+	
+	;mov edi, [fs_size] 
+	;shl edi, 9
+	;add edi, file_system
+	;cmp edi, eax
+	;mov edi, 0
+	;cmovl eax, edi
 
-	je .err_end
+	;jl .err_end
 
 	mov bl, [esi]
 	cmp bl, -1 
@@ -253,7 +255,6 @@ load_file_with_path:
 	call strcmp
 	cmp eax, 0
 	jne .continue
-
 	je .end
 
 	.continue:
@@ -265,8 +266,9 @@ load_file_with_path:
 	call get_file_size
 	call malloc
 	call load_file
-
-	.err_end:
+	
+	call eax
+	;.err_end:
 	pop ebx
 	pop ecx
 	pop edx
@@ -277,7 +279,6 @@ load_file_with_path:
 ; Delete the file with its descriptor at the address eax.
 delete_file:
 	pusha
-
 	dec DWORD [fs_size]
 	mov ebx, eax
 	mov eax, [eax + 508]
@@ -294,16 +295,15 @@ delete_file:
 	ret
 
 exec_file:
-	pusha
 	call load_file_with_path
-	cmp eax, 0
-	je .end
+	;cmp eax, 0
+	;je .end
 	push eax
 	mov ebx, [eax]
 	add ebx, eax
 	call eax
+	pop eax
 	.end:
-	popa
 	ret
 
 fs_size: dd 0

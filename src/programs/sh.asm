@@ -32,8 +32,8 @@ sh:
 	call printf
 	mov edx, 6
 	int 0x80
-	jmp .start
 	pop edx
+	jmp .start
 	call newline
 	jmp .start
 	.end:
