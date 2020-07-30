@@ -29,6 +29,7 @@ create_file:
 	push ecx
 	push edx
 	push edi
+	inc DWORD [fs_size]
 	mov edi, file_system
 	call find_free_block
 	add edi, file_system
@@ -225,6 +226,13 @@ load_file_with_path:
 	.loop:
 
 	mov eax, esi
+	mov edi, eax
+	shr edi, 9
+	cmp edi, [fs_size]
+	mov edi, 0
+	cmove eax, edi
+
+	je .err_end
 
 	mov bl, [esi]
 	cmp bl, -1 
@@ -253,12 +261,12 @@ load_file_with_path:
 	jmp .loop
 
 	.end:
-
 	mov ebx, esi
 	call get_file_size
 	call malloc
 	call load_file
 
+	.err_end:
 	pop ebx
 	pop ecx
 	pop edx
@@ -269,6 +277,8 @@ load_file_with_path:
 ; Delete the file with its descriptor at the address eax.
 delete_file:
 	pusha
+
+	dec DWORD [fs_size]
 	mov ebx, eax
 	mov eax, [eax + 508]
 	mov DWORD [ebx], 0
@@ -286,11 +296,14 @@ delete_file:
 exec_file:
 	pusha
 	call load_file_with_path
-	mov ecx, eax
-	;add ecx, 16
-	push ecx
+	cmp eax, 0
+	je .end
+	push eax
 	mov ebx, [eax]
 	add ebx, eax
-	call ebx
+	call eax
+	.end:
 	popa
 	ret
+
+fs_size: dd 0

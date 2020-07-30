@@ -1,10 +1,10 @@
 [bits 32]
-header: 
-	dd sh
-	dd 0
-	dq 0
-	dq 0
-	dq 0
+;header: 
+;	dd sh
+;	dd 0
+;	dq 0
+;	dq 0
+;	dq 0
 sh:
 	mov edi, [esp + 4]
 	pusha
@@ -24,14 +24,15 @@ sh:
 	call strcpy
 	pop ebx
 	add eax, 5
-	mov cl, ' '
+	mov cl, 0 
 	mov edx, 256
 	call memccpy
 	sub eax, 5 
 	push edx
-	mov eax, SHELL
+	call printf
 	mov edx, 6
 	int 0x80
+	jmp .start
 	pop edx
 	call newline
 	jmp .start
@@ -43,5 +44,6 @@ sh:
 PROMPT: db '> ', 0
 PREFIX: db '/bin/', 0
 SHELL: db '/bin/sh/', 0
+ERROR_NOT_FOUND: db 'Error: file not found %s.', 10, 0
 %include "lib/utils/stdio.asm"
 %include "lib/utils/mem.asm"

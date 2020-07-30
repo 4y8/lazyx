@@ -13,9 +13,12 @@ main:
 	call isr_init
 	sti
 
+	inc DWORD [fs_size]
 	call init_keyboard
 	mov eax, FILE
 	call exec_file
+	mov eax, FILE 
+	call load_file
 	jmp $
 
 %include "lib/text/text.asm"

@@ -53,6 +53,7 @@ syscall:
 	cmp edx, 6
 	jne .l6
 	call exec_file
+	iret
 	.l6:
 	iret
 
